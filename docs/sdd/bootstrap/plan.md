@@ -12,4 +12,4 @@ Verificação comum: `python3 -m unittest discover -s tests -v`, `python3 script
 
 - [x] T01 concluída e verificada
 - [x] T02 concluída e verificada
-- [ ] T03 integrada, revisada e publicada
+- [x] T03 integrada, revisada e publicada

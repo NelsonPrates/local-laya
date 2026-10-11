@@ -29,3 +29,7 @@ A re-revisão confirmou ambas as correções e não encontrou regressões relaci
 Pesquisa → tech-planner → skill de execução Superpowers → revisão/verificação → Gitflow. A biblioteca não altera essa ordem nem repete autorizações já expressas. Tarefas independentes só são paralelas com arquivos distintos; integração e atualização de plano ficam com um coordenador. As reservas são locais ao clone e não substituem coordenação entre máquinas.
 
 A publicação inicial do repositório foi autorizada pelo usuário. Tags/releases futuras têm o fluxo documentado e não são publicadas como efeito do bootstrap. Branch protections estão descritas como recomendação, sem alegação de aplicação automática.
+
+## Publicação
+
+Repositório público criado em [NelsonPrates/local-layla](https://github.com/NelsonPrates/local-layla), com `main` e `develop`. A [CI do bootstrap em main](https://github.com/NelsonPrates/local-layla/actions/runs/38179536407) passou, incluindo os 24 testes e a validação do Compose no runner GitHub. Nenhuma tag ou GitHub Release foi criada.
