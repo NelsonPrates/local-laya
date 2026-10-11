@@ -1,8 +1,9 @@
 # local-layla: contrato dos agentes
 
-Projeto: duas skills de instalação/uso de PapaKoftes/Layla e uma skill de pesquisa para manutenção. Não alterar o produto upstream sem pedido correspondente.
+Projeto: duas skills de instalação/uso de PapaKoftes/Layla e skills de pesquisa e QA para manutenção. Não alterar o produto upstream sem pedido correspondente.
 
-- Começar cada mudança de desenvolvimento/manutenção com `skills/project-research/SKILL.md`; depois usar o papel `docs/workflow/tech-planner.md`. Seguir `docs/workflow/SDD.md`: pesquisa → plano técnico → execução Superpowers → integração/release.
+- Começar cada mudança de desenvolvimento/manutenção com `skills/project-research/SKILL.md`; depois usar o papel `docs/workflow/tech-planner.md` com matriz QA proporcional. Seguir `docs/workflow/SDD.md`: pesquisa → plano técnico → execução Superpowers → QA → integração/release.
+- Usar `docs/workflow/qa-test.md` e `skills/project-qa/SKILL.md` no planejamento dos testes e na verificação final. Registrar evidência por critério/SHA em `qa-report.md`; check obrigatório falho ou indisponível impede recomendar integração. Revalidar o conteúdo combinado e alterações que afetem evidências.
 - Usar a revisão local de Superpowers em `vendor/superpowers/skills/`. Depois do plano, a próxima skill é a execução registrada (`executing-plans` ou `subagent-driven-development`), com seus recursos pertinentes. Instruções explícitas do usuário prevalecem; não solicitar novamente autorização já existente. Não alterar arquivos vendorizados para mudar o processo.
 - Toda tarefa deve ter resultado observável, arquivos, dependências, verificação e dono. Preferir a menor ordem suficiente; revisar e eliminar tarefas desnecessárias antes de executar.
 - Trabalho simultâneo: um escritor por worktree/tarefa; reservar com `scripts/worktree.py`. Paralelizar apenas tarefas independentes com arquivos distintos. Somente o coordenador altera plano/spec compartilhados e integra branches.

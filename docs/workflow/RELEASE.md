@@ -12,18 +12,20 @@
 
 Um coordenador integra PRs serialmente. Preferir merge commits (`--no-ff`) para preservar proveniência e permitir ao script de worktrees confirmar ancestralidade. Se usar squash, conservar o SHA do merge e revisar a equivalência antes de limpar a worktree manualmente; `finish` recusa ancestralidade ausente.
 
+Features chegam a `develop` com revisão e recomendação fundamentada do [qa-test](qa-test.md). Falha/check obrigatório bloqueado volta ao implementador. Revalidar o resultado combinado antes de liberar dependentes; relatórios de features isoladas não provam a combinação. Evidências de QA referem-se ao conteúdo testado e precisam de comparação do diff para reaproveitamento.
+
 ## Release normal
 
 1. Confirmar PRs planejados integrados e CI verde em `develop`. Criar `release/X.Y.Z` a partir de `origin/develop` atualizado; congelar features nessa branch.
 2. Atualizar `VERSION` e `CHANGELOG.md` com a mesma versão. Usar SemVer: patch para correções compatíveis, minor para capacidades compatíveis, major para incompatibilidades de contrato/comandos.
-3. Rodar os checks de scripts/skills, validar Compose e conferir as evidências de container/inferência pertinentes. Registrar limitações e alterações de revisão upstream/Superpowers. Abrir PR `release/X.Y.Z` → `main` e revisar o resultado.
+3. Rodar os checks de scripts/skills, validar Compose e conferir as evidências de container/inferência pertinentes. O QA verifica o candidato estabilizado e registra SHA, resultados e limitações em `qa-report.md` da mudança de release; checks obrigatórios devem passar. Registrar alterações de revisão upstream/Superpowers. Abrir PR `release/X.Y.Z` → `main` e revisar o resultado.
 4. Após a revisão e a autorização de merge/publicação que couber à sessão, integrar em `main`; confirmar CI verde no commit final. Criar tag anotada **`vX.Y.Z` apontando para esse commit de `main`** e enviar a tag. Não marcar a feature ou um commit anterior.
 5. A Action `release.yml` valida tag/versão, ancestralidade em `main`, notas e testes antes de criar a GitHub Release com o arquivo das skills. Publicar a tag é o gatilho de publicação; não é apenas um pedido de validação.
 6. Fazer backmerge de `main` para `develop` e para uma release ativa que ainda precise das correções. Rodar CI no resultado; depois remover a branch de release concluída.
 
 ## Hotfix
 
-Criar `hotfix/X.Y.Z` de `origin/main`, manter a pesquisa e o plano proporcionais ao defeito, corrigir e verificar. Atualizar versão/notas, revisar PR para `main`, integrar e publicar tag como acima. Propagar a correção para `develop` e para qualquer release ativa antes de encerrar. Não misturar features pendentes de `develop` com a correção de produção.
+Criar `hotfix/X.Y.Z` de `origin/main`, manter a pesquisa e o plano proporcionais ao defeito, corrigir e verificar com QA do cenário de regressão e checks afetados. Atualizar versão/notas, revisar PR para `main`, integrar e publicar tag como acima. Propagar a correção para `develop` e para qualquer release ativa, revalidando a combinação antes de encerrar. Não misturar features pendentes de `develop` com a correção de produção.
 
 ## Automação e proteção
 

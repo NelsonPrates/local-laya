@@ -19,6 +19,7 @@ de descoberta não duplicam ou reescrevem os arquivos upstream.
 | Implementar comportamento verificável | `test-driven-development`, proporcional à mudança |
 | Revisar | `requesting-code-review` / `receiving-code-review` |
 | Declarar conclusão | `verification-before-completion` |
+| Verificar aceitação após execução/revisão | `project-qa`, com `verification-before-completion`; investigação via `systematic-debugging` |
 | Encerrar feature | `finishing-a-development-branch`, integrando em `develop` conforme Gitflow |
 
 `writing-plans` apoia o tech-planner, sem deslocar a pesquisa da primeira etapa.
