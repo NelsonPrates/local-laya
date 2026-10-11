@@ -1,0 +1,4 @@
+interface:
+  display_name: "Usar Layla local"
+  short_description: "Converse com Layla e consulte sua API em localhost"
+  default_prompt: "Use $layla-local para consultar a instância local do Layla e enviar minha solicitação com o contexto necessário."

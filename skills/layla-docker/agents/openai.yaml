@@ -1,0 +1,4 @@
+interface:
+  display_name: "Layla em Docker"
+  short_description: "Instale e configure Layla local com Docker Compose"
+  default_prompt: "Use $layla-docker para preparar uma instalação local do Layla em Docker e explicar como operá-la."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Pesquisa do projeto"
+  short_description: "Reúna evidências antes de planejar mudanças no projeto"
+  default_prompt: "Use $project-research para investigar a mudança solicitada e registrar evidências antes do planejamento técnico."

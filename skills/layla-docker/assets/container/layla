@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+set -euo pipefail
+ROOT=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
+cd "$ROOT"
+compose() { docker compose --env-file "$ROOT/.env" -f "$ROOT/compose.yaml" "$@"; }
+usage() {
+  cat <<'HELP'
+Uso: ./layla <comando>
+  build          Compila a imagem CPU (primeira vez: vários minutos)
+  up             Compila se necessário e inicia, aguardando a API
+  down           Para e remove o container; mantém dados/modelos/workspace
+  restart        Reinicia para aplicar mudanças em runtime_config.json
+  status         Mostra o estado do container
+  logs           Acompanha os últimos 100 registros (Ctrl+C para sair)
+  config         Valida e mostra o Compose resolvido
+  health         Consulta /health; HTTP 200 não garante modelo carregado
+  ready          Falha enquanto model_loaded não for true
+  doctor         Diagnóstico do Docker, container e prontidão do modelo
+  approve ID     Aprova uma ação específica dentro do container
+  help           Mostra esta ajuda
+HELP
+}
+health() {
+  compose exec -T layla python -c 'import json,sys,urllib.request; d=json.load(urllib.request.urlopen("http://127.0.0.1:8000/health",timeout=10)); print(json.dumps(d,ensure_ascii=False,indent=2)); sys.exit(0 if len(sys.argv)==1 or d.get("model_loaded") is True else 1)' "$@"
+}
+command=${1:-help}
+case "$command" in
+  help|-h|--help) usage; exit 0;;
+esac
+if [[ ! -f .env ]]; then echo 'Configuração ausente: execute setup.py primeiro.' >&2; exit 1; fi
+if ! command -v docker >/dev/null || ! docker compose version >/dev/null 2>&1; then
+  echo 'Instale Docker Engine/Desktop com o plugin Docker Compose v2.' >&2; exit 1
+fi
+case "$command" in
+  build) compose build;;
+  up) compose up -d --build --wait --wait-timeout 600; echo 'API iniciada. Use ./layla ready para verificar o modelo.';;
+  down) compose down;;
+  restart) compose restart layla;;
+  status) compose ps;;
+  logs) compose logs --tail 100 -f layla;;
+  config) compose config;;
+  health) health;;
+  ready) health ready;;
+  doctor) docker version; docker compose version; compose ps; health ready;;
+  approve)
+    if [[ $# != 2 || ! "$2" =~ ^[a-zA-Z0-9-]+$ ]]; then echo 'Uso: ./layla approve ID' >&2; exit 2; fi
+    compose exec -T layla python -c 'import json,sys,urllib.request; p=json.dumps({"id":sys.argv[1]}).encode(); r=urllib.request.Request("http://127.0.0.1:8000/approve",data=p,headers={"Content-Type":"application/json"}); d=json.load(urllib.request.urlopen(r,timeout=120)); print(json.dumps(d,ensure_ascii=False,indent=2)); sys.exit(0 if d.get("ok") is True else 1)' "$2"
+    ;;
+  *) usage >&2; exit 2;;
+esac

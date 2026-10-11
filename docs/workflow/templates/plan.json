@@ -1,0 +1,19 @@
+{
+  "change": "exemplo",
+  "research": "research.md",
+  "spec": "spec.md",
+  "plan": "plan.md",
+  "execution_skill": "executing-plans",
+  "tasks": [
+    {
+      "id": "T01",
+      "title": "Entregar o comportamento mínimo definido na especificação",
+      "owner": "unassigned",
+      "estimate_minutes": 20,
+      "depends_on": [],
+      "files": ["caminho/exato/implementacao.py", "tests/test_comportamento.py"],
+      "acceptance": "Descrever o resultado observável com os valores reais da spec.",
+      "verify": "Comando real que prova a aceitação, com o resultado esperado."
+    }
+  ]
+}
