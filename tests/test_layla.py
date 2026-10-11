@@ -87,11 +87,26 @@ class SetupTests(unittest.TestCase):
             output = Path(tmp) / "runtime"
             self.assertEqual(run(copied, "--output", output).returncode, 0)
             self.assertTrue((target / "project-research/SKILL.md").is_file())
+            qa = target / "project-qa"
+            self.assertFalse(qa.is_symlink())
+            for resource in ("SKILL.md", "agents/openai.yaml", "references/test-matrix.md", "references/report-template.md"):
+                self.assertTrue((qa / resource).is_file(), resource)
             self.assertEqual(run(target / "layla-local/scripts/layla_client.py", "--help").returncode, 0)
             existing = target / "layla-local/SKILL.md"
             existing.write_text("preserve existing skill")
             self.assertNotEqual(run(installer, "--target", target).returncode, 0)
             self.assertEqual(existing.read_text(), "preserve existing skill")
+
+    def test_existing_qa_skill_prevents_partial_installation(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            target = Path(tmp) / "skills"
+            existing = target / "project-qa/SKILL.md"
+            existing.parent.mkdir(parents=True)
+            existing.write_text("custom QA instructions")
+            installer = ROOT / "scripts/install-skills.py"
+            self.assertNotEqual(run(installer, "--target", target).returncode, 0)
+            self.assertEqual(existing.read_text(), "custom QA instructions")
+            self.assertEqual(sorted(path.name for path in target.iterdir()), ["project-qa"])
 
 
 class ApiHandler(http.server.BaseHTTPRequestHandler):

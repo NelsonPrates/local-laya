@@ -4,7 +4,7 @@ from pathlib import Path
 import re
 
 root = Path(__file__).resolve().parents[1]
-for name in ("layla-docker", "layla-local", "project-research"):
+for name in ("layla-docker", "layla-local", "project-research", "project-qa"):
     folder = root / "skills" / name
     text = (folder / "SKILL.md").read_text(encoding="utf-8")
     assert text.startswith("---\n"), f"{name}: frontmatter ausente"
