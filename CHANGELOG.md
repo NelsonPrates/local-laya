@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Agente QA/testes compartilhado por Codex e Claude, skill project-qa autocontida e seleção de referências primárias.
+- Matriz de testes no planejamento SDD e relatório com evidências antes da integração Gitflow.
+
 ## 0.1.0
 
 - Skills de geração/instalação Docker, uso da API local e pesquisa do projeto.
