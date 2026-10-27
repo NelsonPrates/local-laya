@@ -13,7 +13,7 @@ Use critérios reais da mudança; esta tabela é um ponto de partida, não uma o
 | Jornada web alterada | Browser real, passos do usuário, assertions por estado/elemento e captura de falha | Aplicar Playwright apenas se útil/disponível; esperas fixas e prints sozinhos não provam sucesso |
 | Release/hotfix | Checks relevantes, versão/notas, CI e SHA candidato combinado | `check-release.py` verifica consistência local; não criar tag pública como experimento |
 
-Comandos usuais na raiz do local-layla:
+Comandos usuais na raiz do local-laya:
 
 ```bash
 python3 -m unittest discover -s tests -v
@@ -37,4 +37,4 @@ Para testes novos, derive esperado do contrato; confira se uma mudança plausív
 | [Superpowers systematic-debugging](https://github.com/obra/superpowers/blob/bb92a77741419a4ab5f06e711a283343f1ada0c3/skills/systematic-debugging/SKILL.md) | Reproduzir falhas e investigar causa antes da correção |
 | [Anthropic webapp-testing](https://github.com/anthropics/skills/blob/dbd4588f9e1033efb41dad4bef2f7947c8993d44/skills/webapp-testing/SKILL.md) | Condicional para interface local: observação no browser e evidências de jornada |
 
-Consulta: 2026-10-11. São referências de método; a skill é autocontida e não exige instalá-las. No repo local-layla as três skills Superpowers já estão em `vendor/superpowers/skills/`. A instrução explícita da sessão e o contrato local prevalecem. Não copiar instalações/hooks nem adicionar pytest/Playwright por associação. A comparação completa das candidatas fica na pesquisa SDD da mudança qa-test-agent do projeto.
+Consulta: 2026-10-11. São referências de método; a skill é autocontida e não exige instalá-las. No repo local-laya as três skills Superpowers já estão em `vendor/superpowers/skills/`. A instrução explícita da sessão e o contrato local prevalecem. Não copiar instalações/hooks nem adicionar pytest/Playwright por associação. A comparação completa das candidatas fica na pesquisa SDD da mudança qa-test-agent do projeto.

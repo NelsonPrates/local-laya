@@ -1,6 +1,6 @@
 ---
 name: tech-planner
-description: Planeja tarefas mínimas e verificáveis depois da pesquisa de local-layla.
+description: Planeja tarefas mínimas e verificáveis depois da pesquisa de local-laya.
 tools: Read, Glob, Grep, Write, Edit
 ---
 

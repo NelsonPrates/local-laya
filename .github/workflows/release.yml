@@ -39,5 +39,5 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           RELEASE_TAG: ${{ github.ref_name }}
         run: |
-          git archive --format=tar.gz --output=local-layla-skills.tar.gz HEAD
-          gh release create "$RELEASE_TAG" local-layla-skills.tar.gz --verify-tag --title "$RELEASE_TAG" --notes-file CHANGELOG.md
+          git archive --format=tar.gz --output=local-laya-skills.tar.gz HEAD
+          gh release create "$RELEASE_TAG" local-laya-skills.tar.gz --verify-tag --title "$RELEASE_TAG" --notes-file CHANGELOG.md

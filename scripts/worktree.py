@@ -61,7 +61,7 @@ def main(argv=None):
         common = Path(git("rev-parse", "--path-format=absolute", "--git-common-dir"))
         # O primeiro registro é a worktree principal; toda sessão usa a mesma raiz.
         primary = Path(git("worktree", "list", "--porcelain").splitlines()[0].removeprefix("worktree "))
-        claims = common / "local-layla" / "claims"
+        claims = common / "local-laya" / "claims"
         if args.command == "list":
             records = read_claims(claims)
             print(json.dumps(records, ensure_ascii=False, indent=2))

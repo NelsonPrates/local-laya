@@ -1,6 +1,6 @@
 ---
 name: project-research
-description: Pesquisar e registrar evidências antes do planejamento de desenvolvimento ou manutenção de local-layla, incluindo upstream Layla, Docker, APIs, dependências e workflows de agentes. Use como primeira etapa SDD, antes de propor implementação.
+description: Pesquisar e registrar evidências antes do planejamento de desenvolvimento ou manutenção de local-laya, incluindo upstream Layla, Docker, APIs, dependências e workflows de agentes. Use como primeira etapa SDD, antes de propor implementação.
 ---
 
 # Pesquisa para desenvolvimento e manutenção

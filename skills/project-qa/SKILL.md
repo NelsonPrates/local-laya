@@ -1,6 +1,6 @@
 ---
 name: project-qa
-description: Planejar e executar QA de mudanças de local-layla, mapear critérios de aceitação a testes e relatar evidências antes de integração ou release. Usar na revisão do plano e após implementação, inclusive para regressões de scripts, skills, API local e Docker.
+description: Planejar e executar QA de mudanças de local-laya, mapear critérios de aceitação a testes e relatar evidências antes de integração ou release. Usar na revisão do plano e após implementação, inclusive para regressões de scripts, skills, API local e Docker.
 ---
 
 # QA de desenvolvimento e manutenção

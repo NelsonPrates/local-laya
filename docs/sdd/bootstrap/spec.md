@@ -1,6 +1,6 @@
 # Especificação do bootstrap
 
-Entregar `NelsonPrates/local-layla` público e o projeto em `~/Documentos/local-layla`.
+Entregar `NelsonPrates/local-laya` público e o projeto em `~/Documentos/local-laya`.
 
 - Skills autocontidas para gerar uma instalação Docker CPU do PapaKoftes/Layla e consultar a API local. Persistir dados/modelos/workspace e publicar porta somente no loopback.
 - Gerador não sobrescreve instalação existente; cliente usa somente localhost, desativa permissões de escrita/execução e distingue API disponível de modelo pronto.

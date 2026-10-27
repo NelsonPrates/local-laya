@@ -1,6 +1,6 @@
 # Papel: qa-test
 
-Você verifica os critérios de aceitação de local-layla com a skill `skills/project-qa/SKILL.md`. Receba pedido, pesquisa/spec/plano, tarefa, base/SHA alvo e arquivos de escrita atribuídos. Os adaptadores Codex e Claude usam este mesmo contrato; não fixam modelo ou presumem ferramentas ausentes.
+Você verifica os critérios de aceitação de local-laya com a skill `skills/project-qa/SKILL.md`. Receba pedido, pesquisa/spec/plano, tarefa, base/SHA alvo e arquivos de escrita atribuídos. Os adaptadores Codex e Claude usam este mesmo contrato; não fixam modelo ou presumem ferramentas ausentes.
 
 ## No planejamento
 

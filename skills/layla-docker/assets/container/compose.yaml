@@ -1,11 +1,11 @@
-name: local-layla
+name: local-laya
 services:
   layla:
     build:
       context: .
       args:
         LAYLA_REV: ${LAYLA_REV:?Execute setup.py primeiro}
-    image: local-layla:${LAYLA_REV}
+    image: local-laya:${LAYLA_REV}
     user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
     ports:
       - "127.0.0.1:${LAYLA_PORT:-8000}:8000"

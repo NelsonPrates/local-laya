@@ -6,7 +6,7 @@ Não há código-fonte upstream vendorizado neste repositório. O Dockerfile obt
 o projeto durante a compilação e mantém seu arquivo `LICENSE` em `/opt/layla/LICENSE`.
 
 Layla usa a **Layla Non-Commercial Source License**. Sua licença não é substituída
-pela MIT dos scripts próprios de local-layla. Uso comercial do Layla depende
+pela MIT dos scripts próprios de local-laya. Uso comercial do Layla depende
 dos termos e da autorização de seus titulares. O nome é usado aqui para
 identificar a integração, sem afiliação oficial.
 

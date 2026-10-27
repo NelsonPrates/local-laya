@@ -32,4 +32,4 @@ A publicação inicial do repositório foi autorizada pelo usuário. Tags/releas
 
 ## Publicação
 
-Repositório público criado em [NelsonPrates/local-layla](https://github.com/NelsonPrates/local-layla), com `main` e `develop`. A [CI do bootstrap em main](https://github.com/NelsonPrates/local-layla/actions/runs/38179536407) passou, incluindo os 24 testes e a validação do Compose no runner GitHub. Nenhuma tag ou GitHub Release foi criada.
+Repositório público criado em [NelsonPrates/local-laya](https://github.com/NelsonPrates/local-laya), com `main` e `develop`. A [CI do bootstrap em main](https://github.com/NelsonPrates/local-laya/actions/runs/38179536407) passou, incluindo os 24 testes e a validação do Compose no runner GitHub. Nenhuma tag ou GitHub Release foi criada.

@@ -1,4 +1,4 @@
-# Pesquisa: bootstrap local-layla e workflow SDD
+# Pesquisa: bootstrap local-laya e workflow SDD
 
 Data: 2026-10-11. Pedido: publicar um repositório pessoal público com skills para Docker/API Layla e acrescentar SDD com pesquisa, planejador técnico, Superpowers, agentes paralelos e Gitflow.
 

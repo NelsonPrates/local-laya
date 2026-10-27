@@ -1,6 +1,6 @@
 ---
 name: qa-test
-description: Planeja testes e verifica aceitação de local-layla com evidências antes da integração.
+description: Planeja testes e verifica aceitação de local-laya com evidências antes da integração.
 tools: Read, Glob, Grep, Bash, Write, Edit
 ---
 

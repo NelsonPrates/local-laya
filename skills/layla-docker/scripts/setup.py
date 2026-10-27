@@ -21,7 +21,7 @@ def port_number(value):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--output", type=Path, default=Path.home() / "local-layla-runtime")
+    parser.add_argument("--output", type=Path, default=Path.home() / "local-laya-runtime")
     parser.add_argument("--model", type=Path, help="GGUF existente a copiar para models/; opcional")
     parser.add_argument("--port", type=port_number, default=8000)
     parser.add_argument("--revision", default=UPSTREAM_REV, help="SHA completo do upstream")

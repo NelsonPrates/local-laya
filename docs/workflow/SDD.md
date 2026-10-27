@@ -42,7 +42,7 @@ O contrato é **um agente escritor por worktree e por tarefa**. Todos compartilh
 
 Reservas são publicadas completas por hard link exclusivo no diretório comum de Git, evitando dupla posse e leitura de JSON parcial. São locais à máquina/clone; para múltiplos clones ou máquinas, o coordenador usa assignees/PRs como autoridade e não trata este lock local como distribuído. Uma reserva órfã exige verificar worktree, commits e sessão antes de remover manualmente seu arquivo; nunca recuperá-la por timeout automático.
 
-O Compose tem nome padrão `local-layla`: testes de container simultâneos precisam de instalações próprias, portas diferentes **e nomes de projeto Compose diferentes** (`COMPOSE_PROJECT_NAME=local-layla-t01 ./layla up`). Dados/modelos/workspace de runtime não podem ser compartilhados entre testes escritores.
+O Compose tem nome padrão `local-laya`: testes de container simultâneos precisam de instalações próprias, portas diferentes **e nomes de projeto Compose diferentes** (`COMPOSE_PROJECT_NAME=local-laya-t01 ./layla up`). Dados/modelos/workspace de runtime não podem ser compartilhados entre testes escritores.
 
 ## Skills e papéis portáveis
 

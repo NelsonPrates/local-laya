@@ -12,7 +12,7 @@ Use o gerador incluído para produzir uma instalação independente e explicar s
 3. Execute, a partir desta pasta de skill:
 
    ```bash
-   python3 scripts/setup.py --output ~/local-layla-runtime --model /caminho/modelo.gguf
+   python3 scripts/setup.py --output ~/local-laya-runtime --model /caminho/modelo.gguf
    ```
 
    `--model` é opcional. `--port 8001` resolve uma porta ocupada. O gerador copia o GGUF e preserva instalações existentes recusando sobrescrita; não apagar dados para contornar essa recusa.

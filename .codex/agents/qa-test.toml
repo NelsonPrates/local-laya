@@ -1,5 +1,5 @@
 name = "qa_test"
-description = "Planeja testes e verifica aceitação com evidências antes de integrar local-layla."
+description = "Planeja testes e verifica aceitação com evidências antes de integrar local-laya."
 developer_instructions = """
 Leia AGENTS.md, docs/workflow/qa-test.md e skills/project-qa/SKILL.md.
 No planejamento, devolva a menor matriz suficiente ao tech-planner sem editar seus arquivos.

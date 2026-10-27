@@ -1,4 +1,4 @@
-# local-layla
+# local-laya
 
 Skills para instalar e usar [PapaKoftes/Layla](https://github.com/PapaKoftes/Layla) em Docker pelo localhost, com um workflow compartilhado de desenvolvimento para Codex e Claude. Projeto independente de integração.
 
@@ -35,8 +35,8 @@ O [Gitflow de releases](docs/workflow/RELEASE.md) define `main`, `develop`, feat
 Pré-requisitos no host: Python 3.10+, Bash e Docker com Compose v2. Linux é o alvo principal; Windows via WSL2 e Docker Desktop; macOS via Docker Desktop. A imagem usa Python 3.12 e inferência CPU. A compilação inicial requer internet, vários GB de disco e pode levar vários minutos.
 
 ```bash
-git clone https://github.com/NelsonPrates/local-layla.git
-cd local-layla
+git clone https://github.com/NelsonPrates/local-laya.git
+cd local-laya
 
 # Gere a instalação e copie um modelo GGUF que você já possui:
 python3 skills/layla-docker/scripts/setup.py --output runtime --model /caminho/modelo.gguf
@@ -76,7 +76,7 @@ python3 scripts/install-skills.py --target ~/.codex/skills
 O destino padrão do instalador é `~/.agents/skills`. O script copia as quatro skills próprias; não sobrescreve versões já instaladas. Neste repositório, `.agents/skills/` e `.claude/skills/` já apontam para as skills próprias e Superpowers. Após a instalação externa, recarregue a sessão se necessário e invoque:
 
 ```text
-Use $layla-docker para instalar o Layla em ~/local-layla-runtime usando meu GGUF.
+Use $layla-docker para instalar o Layla em ~/local-laya-runtime usando meu GGUF.
 Use $layla-local para conversar com o Layla disponível em localhost:8000.
 Use $project-qa para verificar esta mudança e registrar evidências antes da integração.
 ```

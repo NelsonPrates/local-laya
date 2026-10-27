@@ -48,4 +48,4 @@ A2 actual bytes: b'{"port": 8000}\n'
 Failed acceptance checks: 1
 ```
 
-Avaliação do coordenador: a skill sustentou decisões corretas diante de suíte verde incompleta e verificação obrigatória indisponível. Nenhuma correção da skill se mostrou necessária. É um cenário controlado, não uma garantia de comportamento em todas as sessões/provedores. O fixture contém um gerador de avaliação; esta falha não é um achado do gerador real de local-layla.
+Avaliação do coordenador: a skill sustentou decisões corretas diante de suíte verde incompleta e verificação obrigatória indisponível. Nenhuma correção da skill se mostrou necessária. É um cenário controlado, não uma garantia de comportamento em todas as sessões/provedores. O fixture contém um gerador de avaliação; esta falha não é um achado do gerador real de local-laya.

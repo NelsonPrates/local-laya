@@ -1,4 +1,4 @@
-# local-layla: contrato dos agentes
+# local-laya: contrato dos agentes
 
 Projeto: duas skills de instalação/uso de PapaKoftes/Layla e skills de pesquisa e QA para manutenção. Não alterar o produto upstream sem pedido correspondente.
 
