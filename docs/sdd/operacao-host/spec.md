@@ -71,3 +71,7 @@ Copiadas de `research.md`.
 1. P3: é aceitável alterar o comportamento do upstream, ou só a configuração gerada por `setup.py`? Bloqueia P3.
 2. P4: quantas cópias guardar e em qual pasta? Não bloqueia a tarefa de P4: o dono dá os valores na linha de agendamento (`DEST`, `--keep N`).
 3. P1: o dono autoriza o merge de `release/0.2.0` em `main`, a tag `v0.2.0` e a publicação? Bloqueia a tarefa T02. Esta sessão não faz merge, tag nem push.
+4. T01 (J4, 2026-10-28): o pré-requisito de `plan.md` não está cumprido. `origin/develop` (`ee063f7`) não contém `docs/sdd/operacao-host/`. Um job agendado não pode fazer merge, e só pode escrever em branches `feature/*`. O dono deve decidir:
+   a. integrar `feature/operacao-host` em `develop` antes de T01 (o plano supõe isto); e
+   b. autorizar a criação de `release/0.2.0` por um job agendado, ou executar T01 pessoalmente.
+   Bloqueia T01, e por isso T02, T03 e T04.
