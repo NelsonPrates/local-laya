@@ -21,6 +21,10 @@ Para um GGUF existente, `--model` copia o arquivo para `models/` e configura seu
 
 Edite `.env` para `LAYLA_PORT`, `LAYLA_CPUS` e `LAYLA_MEMORY`. Rode `./layla up` para recriar o container com esses valores. Edite `data/runtime_config.json` para `model_filename`, `n_ctx`, `n_threads` e idioma; rode `./layla restart`. A configuração existente é mantida pelo app, que completa defaults ausentes.
 
+O gerador grava `performance_mode=mid` e trava `n_ctx`, `completion_max_tokens`, `performance_mode` e `max_runtime_seconds` (900) em `auto_tune_locked_keys`. Sem isso o auto-tune do upstream grava `low` em CPU, o que corta `n_ctx` para 2048 a cada carga de configuração. `GET /settings/not_in_force` lista o que o auto-tune ainda sobrescreve. Uma instalação anterior a esta versão recebe o mesmo efeito com `POST /settings` `{"auto_tune_locked_keys": [...], "performance_mode": "mid"}`, sem reiniciar. Independente disso, o otimizador reduz `n_ctx` enquanto a CPU passa de 75%; não há chave para desligar esse corte.
+
+A imagem instala o extra `core` (chromadb). Uma imagem construída antes disso usa o fallback sem busca vetorial até `./layla up` reconstruí-la. Verifique com `curl -s 'http://127.0.0.1:8000/health?deep=true'`: só a sondagem profunda testa o Chroma (`chroma_ok`, `dependencies.chroma`); o `/health` simples informa `chroma_ok=false` sempre.
+
 Os UID/GID gerados correspondem ao usuário do host. Não execute `setup.py` com sudo. Em Linux com Docker rootless/user namespaces, confira as permissões dos bind mounts para o UID efetivo do container. No macOS/Windows, Docker Desktop gerencia os compartilhamentos.
 
 ## API e operações autorizadas

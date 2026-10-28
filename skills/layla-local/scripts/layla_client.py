@@ -23,6 +23,10 @@ def local_url(value):
     return value.rstrip("/")
 
 
+# Cerca de um quarto do menor n_ctx que o upstream aplica sob pressão (2048).
+LONG_PROMPT_TOKENS = 600
+
+
 class NoRedirect(urllib.request.HTTPRedirectHandler):
     def redirect_request(self, req, fp, code, msg, headers, newurl):
         return None
@@ -42,22 +46,33 @@ def main(argv=None):
     parser.add_argument("--base-url", type=local_url, default=os.environ.get("LAYLA_BASE_URL", "http://127.0.0.1:8000"))
     parser.add_argument("--timeout", type=float, default=120)
     commands = parser.add_subparsers(dest="command", required=True)
-    for name in ("health", "ready", "schema", "pending", "wakeup"):
+    for name in ("health", "ready", "schema", "pending", "wakeup", "budget"):
         commands.add_parser(name)
     ask = commands.add_parser("ask", help="Envia uma mensagem; escrita/execução desabilitadas")
     ask.add_argument("message", help="Mensagem; use - para ler de stdin")
     ask.add_argument("--context", default="")
     ask.add_argument("--conversation-id", default="")
+    ask.add_argument("--aspect", default="", help="aspect_id (ex.: echo, nyx, morrigan); vazio usa o padrão do projeto/instância")
+    ask.add_argument("--project-id", default="", help="Projeto do Layla: aplica seu preâmbulo e aspect padrão")
     args = parser.parse_args(argv)
     if not math.isfinite(args.timeout) or args.timeout <= 0:
         parser.error("--timeout deve ser positivo e finito")
-    path = {"health": "/health", "ready": "/health", "schema": "/openapi.json", "pending": "/pending", "wakeup": "/wakeup"}.get(args.command)
+    path = {"health": "/health", "ready": "/health", "schema": "/openapi.json", "pending": "/pending", "wakeup": "/wakeup", "budget": "/health/context_budget"}.get(args.command)
     payload = None
     if args.command == "ask":
         message = sys.stdin.read() if args.message == "-" else args.message
         if not message.strip():
             parser.error("A mensagem não pode ser vazia")
         payload = {"message": message, "context": args.context, "conversation_id": args.conversation_id, "workspace_root": "/workspace", "allow_write": False, "allow_run": False, "stream": False}
+        if args.aspect:
+            payload["aspect_id"] = args.aspect
+        if args.project_id:
+            payload["project_id"] = args.project_id
+        # Em CPU o upstream reduz n_ctx sob pressão (até 2048) e trunca o que sobra
+        # sem erro; avisar é melhor que uma resposta a um pedido que chegou cortado.
+        estimate = (len(message) + len(args.context)) // 4
+        if estimate > LONG_PROMPT_TOKENS:
+            print(f"Aviso: pedido com ~{estimate} tokens; o contexto efetivo pode truncá-lo. Confira `budget`.", file=sys.stderr)
         path = "/agent"
     try:
         result = request(args.base_url, path, payload, args.timeout)

@@ -37,6 +37,9 @@ class SetupTests(unittest.TestCase):
             self.assertEqual(config["model_filename"], model.name)
             self.assertEqual(config["models_dir"], "/data/models")
             self.assertEqual(config["sandbox_root"], "/workspace")
+            self.assertEqual(config["performance_mode"], "mid")
+            self.assertEqual(set(config["auto_tune_locked_keys"]), {"n_ctx", "completion_max_tokens", "performance_mode", "max_runtime_seconds"})
+            self.assertIn("[core,cpu,llm]", (output / "Dockerfile").read_text())
             self.assertEqual((output / "models" / model.name).read_bytes(), model.read_bytes())
             self.assertIn("LAYLA_PORT=8123", (output / ".env").read_text())
             self.assertTrue(os.access(output / "layla", os.X_OK))
@@ -165,6 +168,31 @@ class ClientTests(unittest.TestCase):
         self.assertFalse(payload["allow_run"])
         self.assertFalse(payload["stream"])
         self.assertEqual(self.server.paths, ["/agent"])
+
+    def test_aspect_and_project_are_sent_only_when_given(self):
+        self.assertEqual(self.invoke("ask", "test"), 0)
+        self.assertNotIn("aspect_id", self.server.payload)
+        self.assertNotIn("project_id", self.server.payload)
+        self.assertEqual(self.invoke("ask", "test", "--aspect", "echo", "--project-id", "p-1"), 0)
+        self.assertEqual(self.server.payload["aspect_id"], "echo")
+        self.assertEqual(self.server.payload["project_id"], "p-1")
+        self.assertFalse(self.server.payload["allow_write"])
+
+    def test_budget_reads_context_budget(self):
+        self.server.reply = {"ok": True, "n_ctx": 2048}
+        self.assertEqual(self.invoke("budget"), 0)
+        self.assertEqual(self.server.paths, ["/health/context_budget"])
+
+    def test_long_prompt_warns_and_still_sends(self):
+        err = io.StringIO()
+        with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(err):
+            self.assertEqual(client.main(["--base-url", self.url, "ask", "curto", "--context", "x" * 4000]), 0)
+        self.assertIn("Aviso", err.getvalue())
+        self.assertEqual(self.server.paths, ["/agent"])
+        err = io.StringIO()
+        with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(err):
+            client.main(["--base-url", self.url, "ask", "curto"])
+        self.assertEqual(err.getvalue(), "")
 
     def test_health_is_distinct_from_ready(self):
         self.server.reply = {"model_loaded": False, "status": "ok"}
