@@ -21,10 +21,13 @@ RUN test -n "$LAYLA_REV" \
     && rm -rf .git
 
 # O índice CPU evita baixar bibliotecas CUDA numa instalação sem GPU.
+# `core` traz o chromadb: sem ele a memória e o índice do workspace caem num
+# fallback sem busca vetorial e /health informa chroma_ok=false.
 RUN pip install --no-cache-dir torch torchvision --index-url https://download.pytorch.org/whl/cpu \
-    && pip install --no-cache-dir '/opt/layla[cpu,llm]'
+    && pip install --no-cache-dir '/opt/layla[core,cpu,llm]'
 
 WORKDIR /opt/layla/agent
-ENV HOME=/data LAYLA_DATA_DIR=/data
+# O chromadb envia telemetria anônima por padrão; a instância só fala com o loopback.
+ENV HOME=/data LAYLA_DATA_DIR=/data ANONYMIZED_TELEMETRY=False
 EXPOSE 8000
 CMD ["python", "-m", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--no-proxy-headers"]
