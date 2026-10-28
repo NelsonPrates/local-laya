@@ -1,6 +1,6 @@
 # local-layla: contrato dos agentes
 
-Projeto: duas skills de instalação/uso de PapaKoftes/Layla e skills de pesquisa e QA para manutenção. Não alterar o produto upstream sem pedido correspondente.
+Projeto: skills de instalação, uso, ajuste e medição de PapaKoftes/Layla, o papel `layla-optimizer` (`docs/workflow/layla-optimization.md`) e skills de pesquisa e QA para manutenção. Não alterar o produto upstream sem pedido correspondente.
 
 - Começar cada mudança de desenvolvimento/manutenção com `skills/project-research/SKILL.md`; depois usar o papel `docs/workflow/tech-planner.md` com matriz QA proporcional. Seguir `docs/workflow/SDD.md`: pesquisa → plano técnico → execução Superpowers → QA → integração/release.
 - Usar `docs/workflow/qa-test.md` e `skills/project-qa/SKILL.md` no planejamento dos testes e na verificação final. Registrar evidência por critério/SHA em `qa-report.md`; check obrigatório falho ou indisponível impede recomendar integração. Revalidar o conteúdo combinado e alterações que afetem evidências.

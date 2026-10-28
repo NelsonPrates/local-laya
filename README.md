@@ -6,8 +6,12 @@ Skills para instalar e usar [PapaKoftes/Layla](https://github.com/PapaKoftes/Lay
 | --- | --- |
 | [layla-docker](skills/layla-docker/SKILL.md) | Gera scripts, Compose e configuração; ensina instalação e operação |
 | [layla-local](skills/layla-local/SKILL.md) | Ensina a LLM a consultar a instância e conversar pela API local |
+| [layla-tuning](skills/layla-tuning/SKILL.md) | Fotografa e ajusta configuração, projeto, aspect e learnings de uma instância |
+| [layla-benchmark](skills/layla-benchmark/SKILL.md) | Mede respostas antes e depois de um ajuste, sem reenviar perguntas |
 | [project-research](skills/project-research/SKILL.md) | Pesquisa evidências para desenvolver e manter o projeto |
 | [project-qa](skills/project-qa/SKILL.md) | Planeja testes e verifica critérios com evidências antes de integrar |
+
+O papel [layla-optimizer](.claude/agents/layla-optimizer.md) usa as quatro skills `layla-*` para criar, configurar e otimizar uma instância e suas dependências, seguindo o [passo a passo de otimização](docs/workflow/layla-optimization.md).
 
 ## Desenvolvimento com Codex e Claude
 
@@ -73,7 +77,7 @@ python3 scripts/install-skills.py
 python3 scripts/install-skills.py --target ~/.codex/skills
 ```
 
-O destino padrão do instalador é `~/.agents/skills`. O script copia as quatro skills próprias; não sobrescreve versões já instaladas. Neste repositório, `.agents/skills/` e `.claude/skills/` já apontam para as skills próprias e Superpowers. Após a instalação externa, recarregue a sessão se necessário e invoque:
+O destino padrão do instalador é `~/.agents/skills`. O script copia as seis skills próprias; não sobrescreve versões já instaladas. Neste repositório, `.agents/skills/` e `.claude/skills/` já apontam para as skills próprias e Superpowers. Após a instalação externa, recarregue a sessão se necessário e invoque:
 
 ```text
 Use $layla-docker para instalar o Layla em ~/local-layla-runtime usando meu GGUF.

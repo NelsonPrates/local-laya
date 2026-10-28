@@ -147,7 +147,7 @@ class ReleaseTests(unittest.TestCase):
 
     def test_skill_discovery_links_and_vendor_integrity(self):
         for provider in (".agents", ".claude"):
-            for name in ("project-research", "project-qa", "layla-docker", "layla-local", "executing-plans", "subagent-driven-development"):
+            for name in ("project-research", "project-qa", "layla-docker", "layla-local", "layla-tuning", "layla-benchmark", "executing-plans", "subagent-driven-development"):
                 self.assertTrue((ROOT / provider / "skills" / name / "SKILL.md").is_file())
         result = subprocess.run([sys.executable, str(ROOT / "scripts/check-vendor.py")], capture_output=True, text=True)
         self.assertEqual(result.returncode, 0, result.stderr)
