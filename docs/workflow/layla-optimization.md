@@ -58,7 +58,7 @@ Recusadas pela API nesta revisão: `prompt_optimizer_enabled`, `knowledge_max_by
 
 1. Até ~200 palavras: só identificadores e as restrições que decidem.
 2. Pergunta fechada: opções A/B/C, "choose and give one line of reason".
-3. "Do not read files; use only this context."
+3. "Do not read files; use only this context." Reduz, mas não impede: com `max_tool_calls=1` o log ainda registrou dois `tool=read_file` numa consulta de 2026-10-28.
 4. **Termine com `Answer in one line.`, em inglês.** O otimizador de prompt reescreve pedidos de mais de 12 palavras pela intenção ("Create a concrete plan for: … effort, dependencies, risks") e só preserva o texto diante de uma restrição de tamanho em inglês. Medido: a mesma pergunta caiu de uma resposta inteira em forma de plano para três frases.
 5. Rode em segundo plano; nunca reenvie um POST que estourou o tempo.
 

@@ -8,3 +8,7 @@ Pedido do dono (2026-10-28): documentar o passo a passo das otimizações feitas
 - Agentes do repositório seguem o par `.claude/agents/*.md` + `.codex/agents/*.toml`; skills são validadas por `scripts/check-skills.py`, instaladas por `scripts/install-skills.py` e descobertas por links em `.agents/skills` e `.claude/skills`.
 
 Alternativas: (A) um agente e duas skills novas, `layla-tuning` e `layla-benchmark`, reaproveitando as duas existentes; (B) um agente e uma skill única; (C) só o documento. Recomendado: A — cada skill tem um script testável e um gatilho distinto, e as existentes não crescem.
+
+## Conselho do Layla
+
+- Layla (2026-10-28): A — um agente e as duas skills novas, pela clareza e modularidade — seguida. Pergunta fechada em inglês terminada em `Answer in one line.`, aspect `nyx`, sem projeto: 692 s, carga 1,7 → 10,5 (CI no host). Resposta em duas frases, sem forma de plano. O log registrou dois `tool=read_file` apesar de `max_tool_calls=1` e de "Do not read files": o limite e a frase reduzem, não impedem, chamadas de ferramenta.
