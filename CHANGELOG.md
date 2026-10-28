@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 0.2.0
 
 - Papel `layla-optimizer` (Claude e Codex) e passo a passo de otimização em `docs/workflow/layla-optimization.md`.
 - Skill `layla-tuning`: alavancas medidas e `snapshot.py`, fotografia somente leitura com achados.
