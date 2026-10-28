@@ -22,7 +22,7 @@ RUN test -n "$LAYLA_REV" \
 
 # O índice CPU evita baixar bibliotecas CUDA numa instalação sem GPU.
 # `core` traz o chromadb: sem ele a memória e o índice do workspace caem num
-# fallback sem busca vetorial e /health informa chroma_ok=false.
+# fallback sem busca vetorial e /health?deep=true informa chroma_ok=false.
 RUN pip install --no-cache-dir torch torchvision --index-url https://download.pytorch.org/whl/cpu \
     && pip install --no-cache-dir '/opt/layla[core,cpu,llm]'
 
