@@ -1,0 +1,4 @@
+interface:
+  display_name: "Medição do Layla"
+  short_description: "Mede tempo e qualidade antes e depois de um ajuste, sem reenvio"
+  default_prompt: "Use $layla-benchmark para medir a instância local do Layla antes e depois desta mudança."

@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Papel `layla-optimizer` (Claude e Codex) e passo a passo de otimização em `docs/workflow/layla-optimization.md`.
+- Skill `layla-tuning`: alavancas medidas e `snapshot.py`, fotografia somente leitura com achados.
+- Skill `layla-benchmark`: `bench.py` envia cada pergunta uma vez, registra tempo, carga, resposta, forma de plano e ferramentas, e compara rodadas.
 - Configuração gerada trava `n_ctx`, `completion_max_tokens` e `performance_mode=mid` contra o auto-tune, que cortava o contexto para 2048 em CPU.
 - Imagem instala o extra `core` (chromadb), com telemetria anônima desligada.
 - Cliente: `--aspect`, `--project-id`, subcomando `budget` e aviso de pedido longo; skill layla-local ensina a pedir conselho a um modelo pequeno.

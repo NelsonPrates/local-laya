@@ -1,0 +1,4 @@
+interface:
+  display_name: "Ajuste do Layla"
+  short_description: "Fotografa e ajusta configuração, projeto, aspect e learnings"
+  default_prompt: "Use $layla-tuning para fotografar a instância local do Layla e propor um ajuste medido."

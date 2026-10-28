@@ -51,7 +51,8 @@ O Compose tem nome padrão `local-layla`: testes de container simultâneos preci
 - `.agents/skills/`: skills locais descobertas pelo Codex.
 - `.claude/skills/`: as mesmas skills descobertas pelo Claude Code.
 - `.codex/agents/tech-planner.toml` e `.claude/agents/tech-planner.md`: adaptadores do planejador compartilhado.
-- `.codex/agents/qa-test.toml` e `.claude/agents/qa-test.md`: adaptadores do QA compartilhado. Ambos os papéis herdam o modelo da sessão.
+- `.codex/agents/qa-test.toml` e `.claude/agents/qa-test.md`: adaptadores do QA compartilhado.
+- `.codex/agents/layla-optimizer.toml` e `.claude/agents/layla-optimizer.md`: operador que cria, configura e mede uma instância Layla pelo [passo a passo](layla-optimization.md). Os papéis herdam o modelo da sessão.
 
 Os diretórios de descoberta usam links relativos para `skills/` e `vendor/superpowers/skills/`, preservando os recursos vizinhos. Se uma plataforma não seguir links, copie as pastas para seu diretório de skills. O contrato continua disponível por leitura direta dos arquivos.
 
