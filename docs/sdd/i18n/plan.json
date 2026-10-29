@@ -1,0 +1,129 @@
+{
+  "change": "i18n",
+  "research": "research.md",
+  "spec": "spec.md",
+  "plan": "plan.md",
+  "execution_skill": "subagent-driven-development",
+  "tasks": [
+    {
+      "id": "T01",
+      "title": "Add the stdlib i18n tool: extract, build, pseudo, and check",
+      "owner": "unassigned",
+      "estimate_minutes": 45,
+      "depends_on": [],
+      "files": ["scripts/i18n.py", "tests/test_i18n_tool.py"],
+      "acceptance": "I6 and I9: extract writes a .pot file from _() calls with an ast scan. build compiles each .po to a .mo that gettext.GNUTranslations reads, and writes a Bash message file with printf %q quoting. pseudo writes a marked catalog. check fails on a missing msgid, a stale .mo or .sh file, and a stale document marker. Only the standard library is imported.",
+      "verify": "python3 -m unittest tests.test_i18n_tool -v; expected: OK, including a .mo round trip through gettext and a failing check for each stale case."
+    },
+    {
+      "id": "T02",
+      "title": "Add the translation helper to each Python skill",
+      "owner": "unassigned",
+      "estimate_minutes": 20,
+      "depends_on": [],
+      "files": ["skills/layla-docker/scripts/_i18n.py", "skills/layla-local/scripts/_i18n.py", "tests/test_i18n_helper.py"],
+      "acceptance": "I3: translator(domain) reads LAYLA_LANG first (pt-BR becomes pt_BR), then the standard locale variables, with fallback=True. A missing catalog or unknown locale gives English. The two copies are byte-identical.",
+      "verify": "python3 -m unittest tests.test_i18n_helper -v; expected: OK, with tests for LAYLA_LANG, LANGUAGE, an unknown locale, and identical copies."
+    },
+    {
+      "id": "T03",
+      "title": "Externalize the setup.py messages",
+      "owner": "unassigned",
+      "estimate_minutes": 30,
+      "depends_on": ["T01", "T02"],
+      "files": ["skills/layla-docker/scripts/setup.py", "skills/layla-docker/locales", "tests/test_i18n_setup.py"],
+      "acceptance": "I1 and I2: every print, parser.error, ArgumentTypeError, and help string in setup.py uses _(). locales/layla-docker.pot exists. English output is byte-identical. A pseudo catalog marks every message.",
+      "verify": "python3 -m unittest discover -s tests -v; expected: OK. The unwrapped-literal test and the pseudo-locale test pass for setup.py."
+    },
+    {
+      "id": "T04",
+      "title": "Externalize the layla_client.py messages",
+      "owner": "unassigned",
+      "estimate_minutes": 25,
+      "depends_on": ["T01", "T02"],
+      "files": ["skills/layla-local/scripts/layla_client.py", "skills/layla-local/locales", "tests/test_i18n_client.py"],
+      "acceptance": "I1 and I2: every help and error message uses _(). The JSON responses from the API stay unchanged. locales/layla-local.pot exists. English output is byte-identical.",
+      "verify": "python3 -m unittest discover -s tests -v; expected: OK. The unwrapped-literal test and the pseudo-locale test pass for layla_client.py."
+    },
+    {
+      "id": "T05",
+      "title": "Localize the layla Bash script with generated message files",
+      "owner": "unassigned",
+      "estimate_minutes": 35,
+      "depends_on": ["T03"],
+      "files": ["skills/layla-docker/assets/container/layla", "skills/layla-docker/assets/container/messages", "skills/layla-docker/scripts/setup.py", "skills/layla-docker/locales", "tests/test_i18n_bash.py"],
+      "acceptance": "I1, I2, and I3: layla sources messages/<locale>.sh when it exists and keeps inline English defaults. setup.py copies messages/. The help text and the 4 messages come from the catalog. The Compose interpolation message stays English. A missing file gives English.",
+      "verify": "bash -n skills/layla-docker/assets/container/layla; python3 -m unittest tests.test_i18n_bash -v; expected: exit 0. ./layla help is byte-identical without LAYLA_LANG and marked with the pseudo locale."
+    },
+    {
+      "id": "T06",
+      "title": "Record the upstream language registry at the pinned SHA",
+      "owner": "coordinator",
+      "estimate_minutes": 20,
+      "depends_on": [],
+      "files": ["docs/sdd/i18n/upstream-languages.md"],
+      "acceptance": "Q1 and Q2 have answers with links at 336ee4a: the full list of response_language keys and aliases after the tutor merge, and where the UI interface language is stored.",
+      "verify": "Coordinator review of each link at the pinned SHA; expected: each key in the list appears in the linked source."
+    },
+    {
+      "id": "T07",
+      "title": "Add setup.py --language with an upstream allowlist",
+      "owner": "unassigned",
+      "estimate_minutes": 30,
+      "depends_on": ["T05", "T06"],
+      "files": ["skills/layla-docker/scripts/setup.py", "skills/layla-docker/references/operations.md", "tests/test_language_flag.py"],
+      "acceptance": "I5: --language accepts the codes and names from upstream-languages.md, case-insensitive, and writes the canonical value to response_language. The default stays English. An unknown value exits 2 and writes no file.",
+      "verify": "python3 -m unittest tests.test_language_flag -v; expected: OK, with a valid code, a native name, the default, and a rejected value with no side effects."
+    },
+    {
+      "id": "T08",
+      "title": "Add the first locale pt_BR and allow translations in the contract",
+      "owner": "coordinator",
+      "estimate_minutes": 45,
+      "depends_on": ["T04", "T07"],
+      "files": ["AGENTS.md", "skills/layla-docker/locales", "skills/layla-docker/assets/container/messages", "skills/layla-local/locales", "tests/test_i18n_install.py"],
+      "acceptance": "I4 and I6: AGENTS.md allows translated catalogs and translated human docs, and keeps English as the source. pt_BR .po, .mo, and .sh files are complete for both skills. A skill copied with install-skills.py shows pt_BR text with LAYLA_LANG=pt_BR outside the repository.",
+      "verify": "python3 scripts/i18n.py check; python3 scripts/check-style.py; python3 -m unittest discover -s tests -v; expected: exit 0 for all."
+    },
+    {
+      "id": "T09",
+      "title": "Run the translation check in CI and document how to add a locale",
+      "owner": "unassigned",
+      "estimate_minutes": 20,
+      "depends_on": ["T08"],
+      "files": [".github/workflows/ci.yml", ".github/workflows/release.yml", "docs/workflow/I18N.md"],
+      "acceptance": "I6: CI and release run python scripts/i18n.py check after check-style. I18N.md gives the steps to extract, translate, build, and check a new locale.",
+      "verify": "python3 scripts/i18n.py check; a local run of each new workflow step; expected: exit 0. A changed .po file without a build makes the check fail."
+    },
+    {
+      "id": "T10",
+      "title": "Translate the README to pt-BR with a staleness marker",
+      "owner": "unassigned",
+      "estimate_minutes": 40,
+      "depends_on": ["T09"],
+      "files": ["README.md", "README.pt-BR.md"],
+      "acceptance": "I7: README.pt-BR.md starts with the SHA-256 marker of README.md. Both files link to each other. README.md documents LAYLA_LANG and --language.",
+      "verify": "python3 scripts/i18n.py check; expected: exit 0. A one-line change to README.md makes the check fail."
+    },
+    {
+      "id": "T11",
+      "title": "Tell the agents to reply in the user's language",
+      "owner": "unassigned",
+      "estimate_minutes": 15,
+      "depends_on": ["T07"],
+      "files": ["skills/layla-docker/SKILL.md", "skills/layla-local/SKILL.md"],
+      "acceptance": "I8: both skills tell the agent to reply in the user's language and to keep commands, paths, and API fields unchanged. layla-docker names LAYLA_LANG and --language. 0 hard STE violations.",
+      "verify": "python3 scripts/check-style.py; python3 scripts/check-skills.py; expected: exit 0."
+    },
+    {
+      "id": "T12",
+      "title": "Record the change in the changelog",
+      "owner": "coordinator",
+      "estimate_minutes": 10,
+      "depends_on": ["T10", "T11"],
+      "files": ["CHANGELOG.md"],
+      "acceptance": "The Unreleased section names LAYLA_LANG, --language, the pt_BR locale, and README.pt-BR.md.",
+      "verify": "python3 -m unittest discover -s tests -v; python3 scripts/i18n.py check; expected: exit 0."
+    }
+  ]
+}
