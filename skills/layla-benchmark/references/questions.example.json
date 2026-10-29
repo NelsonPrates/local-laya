@@ -1,0 +1,14 @@
+[
+  {
+    "id": "branch",
+    "expect": "B",
+    "aspect_id": "nyx",
+    "message": "GitFlow repository: feature/* starts from develop and returns to develop; nothing reaches main without a staging pre-release. A documentation change to the agent conventions is starting now. Which branch? A) commit directly on develop; B) feature/<name> from develop; C) hotfix/<name> from main. Do not read files; use only this context. Choose and give one line of reason. Answer in one line."
+  },
+  {
+    "id": "proven-by",
+    "expect": "B",
+    "aspect_id": "nyx",
+    "message": "A Definition of done criterion has no automated test yet. The checker requires every criterion to name a proof and rejects blanket success claims. How to fill the Proven by column? A) point to a nearby test that already exists; B) write gap: with the reason; C) write that everything passed. Do not read files; use only this context. Choose and give one line of reason. Answer in one line."
+  }
+]

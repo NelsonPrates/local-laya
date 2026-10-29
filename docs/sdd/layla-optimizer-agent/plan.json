@@ -1,0 +1,10 @@
+{
+  "change": "layla-optimizer-agent",
+  "research": "research.md",
+  "spec": "spec.md",
+  "plan": "plan.md",
+  "execution_skill": "executing-plans",
+  "tasks": [
+    {"id":"T01","title":"Agente layla-optimizer, skills layla-tuning e layla-benchmark, passo a passo","owner":"coordinator","estimate_minutes":60,"depends_on":[],"files":["skills/layla-tuning/","skills/layla-benchmark/",".claude/agents/layla-optimizer.md",".codex/agents/layla-optimizer.toml",".agents/skills/",".claude/skills/","docs/workflow/","scripts/check-skills.py","scripts/install-skills.py","tests/","README.md","AGENTS.md","CHANGELOG.md","docs/sdd/layla-optimizer-agent/"],"acceptance":"Roteiro em ordem, agente nos dois provedores, snapshot somente leitura com achados, bench sem reenvio com comparação, registros atualizados.","verify":"python3 -m unittest discover -s tests -v; python3 scripts/check-skills.py; python3 scripts/check-plan.py docs/sdd/layla-optimizer-agent/plan.json"}
+  ]
+}

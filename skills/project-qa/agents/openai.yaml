@@ -1,0 +1,4 @@
+interface:
+  display_name: "QA de local-layla"
+  short_description: "Planeja testes e verifica entregas com evidências"
+  default_prompt: "Use $project-qa para verificar os critérios e registrar evidências desta mudança antes da integração."

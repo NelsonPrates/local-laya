@@ -55,6 +55,12 @@ def main(argv=None):
         "n_gpu_layers": 0,
         "n_ctx": 4096,
         "n_batch": 256,
+        # Sem travar, o auto-tune grava performance_mode=low em CPU, que corta
+        # n_ctx para 2048 e trunca os pedidos sem avisar; 600 s não bastam a um 7B em CPU.
+        "performance_mode": "mid",
+        "completion_max_tokens": 512,
+        "max_runtime_seconds": 900,
+        "auto_tune_locked_keys": ["n_ctx", "completion_max_tokens", "performance_mode", "max_runtime_seconds"],
         "max_resident_models": 1,
         "response_language": "Portuguese",
         "remote_enabled": False,

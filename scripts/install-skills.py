@@ -11,7 +11,7 @@ def main():
     args = parser.parse_args()
     source = Path(__file__).resolve().parents[1] / "skills"
     target = args.target.expanduser().resolve()
-    names = ("layla-docker", "layla-local", "project-research")
+    names = ("layla-docker", "layla-local", "layla-tuning", "layla-benchmark", "project-research", "project-qa")
     conflicts = [str(target / name) for name in names if (target / name).exists() or (target / name).is_symlink()]
     if conflicts:
         parser.error("Destino já existe; nenhum arquivo foi alterado: " + ", ".join(conflicts))

@@ -1,0 +1,49 @@
+{
+  "change": "operacao-host",
+  "research": "research.md",
+  "spec": "spec.md",
+  "plan": "plan.md",
+  "execution_skill": "executing-plans",
+  "tasks": [
+    {
+      "id": "T01",
+      "title": "Preparar release/0.2.0 a partir de origin/develop",
+      "owner": "coordinator",
+      "estimate_minutes": 20,
+      "depends_on": [],
+      "files": ["VERSION", "CHANGELOG.md", "docs/sdd/operacao-host/qa-report.md"],
+      "acceptance": "Em release/0.2.0, VERSION é 0.2.0, CHANGELOG.md tem a seção ## 0.2.0 e skills/project-qa/SKILL.md existe (A1, A2).",
+      "verify": "python3 scripts/check-release.py v0.2.0 → 'Tag, versão e notas coerentes'; python3 scripts/check-skills.py → código 0; python3 -m unittest discover -s tests -v → OK; bash -n skills/layla-docker/assets/container/layla → código 0"
+    },
+    {
+      "id": "T02",
+      "title": "Integrar release/0.2.0 em main, tag v0.2.0, backmerge e atualizar a cópia instalada",
+      "owner": "repository-owner",
+      "estimate_minutes": 20,
+      "depends_on": ["T01"],
+      "files": ["docs/sdd/operacao-host/handoffs/T02-owner.md"],
+      "acceptance": "main contém project-qa; v0.2.0 aponta para um commit de main; a cópia instalada não tem links quebrados deste projeto (A3).",
+      "verify": "git merge-base --is-ancestor v0.2.0 origin/main → código 0; git ls-tree origin/main skills/project-qa/SKILL.md → uma linha; find <pasta de skills> -xtype l → nenhum link deste projeto"
+    },
+    {
+      "id": "T03",
+      "title": "Comando ./layla backup DEST [--keep N]",
+      "owner": "unassigned",
+      "estimate_minutes": 40,
+      "depends_on": ["T02"],
+      "files": ["skills/layla-docker/assets/container/layla", "skills/layla-docker/references/operations.md", "tests/test_layla.py", "CHANGELOG.md", "docs/sdd/operacao-host/qa-report.md"],
+      "acceptance": "backup cria layla-data-<UTC>.tgz com data/ e sem models/; --keep N guarda os N mais novos; DEST em data/ e N inválido falham com código 2; funciona sem docker no PATH (A4-A7).",
+      "verify": "python3 -m unittest discover -s tests -v → OK com os testes de backup; bash -n skills/layla-docker/assets/container/layla → código 0; python3 scripts/check-skills.py → código 0"
+    },
+    {
+      "id": "T04",
+      "title": "Diagnóstico somente leitura de chroma_ok: false",
+      "owner": "layla-optimizer",
+      "estimate_minutes": 30,
+      "depends_on": ["T03"],
+      "files": ["docs/sdd/operacao-host/chroma-diagnosis.md"],
+      "acceptance": "chroma-diagnosis.md registra a causa ou as evidências que faltam, cita /health, layla.log e o upstream 336ee4a, sem IP nem nome de host (A8).",
+      "verify": "grep -c -e '/health' -e 'layla.log' -e '336ee4a' docs/sdd/operacao-host/chroma-diagnosis.md → 3 ou mais; grep -En '([0-9]{1,3}\\.){3}[0-9]{1,3}' docs/sdd/operacao-host/chroma-diagnosis.md → sem saída"
+    }
+  ]
+}

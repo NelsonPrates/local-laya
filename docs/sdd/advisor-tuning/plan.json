@@ -1,0 +1,10 @@
+{
+  "change": "advisor-tuning",
+  "research": "research.md",
+  "spec": "spec.md",
+  "plan": "plan.md",
+  "execution_skill": "executing-plans",
+  "tasks": [
+    {"id":"T01","title":"Contexto travado, chromadb e cliente de conselho","owner":"coordinator","estimate_minutes":40,"depends_on":[],"files":["skills/layla-docker/","skills/layla-local/","tests/test_layla.py","CHANGELOG.md","docs/sdd/advisor-tuning/"],"acceptance":"Config gerada trava o contexto, imagem instala chromadb, cliente envia aspect/projeto e avisa pedido longo, skill ensina o formato.","verify":"python3 -m unittest discover -s tests -v; python3 scripts/check-skills.py; python3 scripts/check-plan.py docs/sdd/advisor-tuning/plan.json"}
+  ]
+}
