@@ -46,7 +46,7 @@ Interface de T03: `./layla backup DEST [--keep N]`. Saída padrão: o caminho do
   - Criar `release/0.2.0` de `origin/develop`. Atualizar `VERSION` e `CHANGELOG.md`. Rodar os checks. Registrar QA em `qa-report.md`. Abrir o PR para `main` só com autorização.
   - Resultado: A1, A2.
   - Verificação: `python3 scripts/check-release.py v0.2.0` → `Tag, versão e notas coerentes`; `python3 scripts/check-skills.py` → código 0; `python3 -m unittest discover -s tests -v` → `OK`; `bash -n skills/layla-docker/assets/container/layla` → código 0.
-- [ ] **T02 — Integrar a release e atualizar a cópia instalada** (dono: dono do repositório e operador do host; 20 min; depende de: T01)
+- [x] **T02 — Integrar a release e atualizar a cópia instalada** (dono: dono do repositório e operador do host; 20 min; depende de: T01)
   - Merge `release/0.2.0` → `main` (`--no-ff`), tag anotada `v0.2.0` no commit de `main`, backmerge para `develop`. O operador do host atualiza a cópia instalada a partir de `main`.
   - Resultado: A3.
   - Verificação: `git merge-base --is-ancestor v0.2.0 origin/main` → código 0; `git ls-tree origin/main skills/project-qa/SKILL.md` → uma linha; `find <pasta de skills> -xtype l` → nenhum link deste projeto.
