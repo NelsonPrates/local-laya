@@ -1,22 +1,22 @@
-# Relatório QA: <mudanca>
+# QA report: <change>
 
-Data/agente: <UTC ou timezone explícito; identidade>. Modo: <independente ou autoavaliação>.
-Alvo: <SHA completo testado>, base: <SHA>; worktree: <limpa ou diff/arquivos não commitados identificados>.
-Ambiente: <SO, versões relevantes, serviço simulado/real, pré-requisitos>.
-Escopo: <critérios e mudanças>; fora do escopo: <razão>.
+Date and agent: <UTC or explicit time zone>, <identity>. Mode: <independent or self-assessment>.
+Target: <full tested SHA>. Base: <SHA>. Worktree: <clean, or the identified diff and uncommitted files>.
+Environment: <OS, relevant versions, simulated or real service, prerequisites>.
+Scope: <criteria and changes>. Out of scope: <reason>.
 
-| Critério/check | Obrigatório? | Comando ou procedimento real | Esperado | Obtido e exit code | Estado | Evidência |
+| Criterion or check | Required? | Real command or procedure | Expected | Actual result and exit code | Status | Evidence |
 | --- | --- | --- | --- | --- | --- | --- |
-| <ID> | <sim/não e motivo> | <comando executado ou não executado> | <resultado observável> | <resultado real/indisponível> | <pass/fail/blocked/not-run> | <saída curta ou artefato sem segredo> |
+| <ID> | <yes/no and reason> | <command that ran, or did not run> | <observable result> | <real result, or not available> | <pass/fail/blocked/not-run> | <short output or artifact without secrets> |
 
-## Defeitos e bloqueios
+## Defects and blocks
 
-Para cada ocorrência: impacto, arquivo/entrada, passos mínimos, esperado/obtido, frequência, evidência e próximo responsável. Se não reproduzido, não inventar causa. Falha pré-existente continua visível; anotar comparação com a base quando feita.
+For each item, record the impact, the file or input, the minimum steps, the expected and actual results, the frequency, and the evidence. Name the next owner. If you cannot reproduce it, do not invent a cause. A defect that existed before the change stays visible. Record the comparison with the base when you make one.
 
-## Decisão
+## Decision
 
-<pass/fail/blocked>, porque <critérios obrigatórios e defeitos>. Listar checks fora do escopo não executados e riscos residuais relevantes. Não preencher pass com base em relato de outro agente ou em execução antiga sem verificar sua aplicabilidade.
+<pass/fail/blocked>, because <required criteria and defects>. List the out-of-scope checks that did not run. List the relevant residual risks. Do not record pass from the report of another agent. Do not record pass from an old run unless you checked that it still applies.
 
-## Revalidação
+## New check
 
-Após correção/integração: <novo SHA, diff relevante, checks repetidos e resultado>. Se apenas relatório/controle mudou, identificar o diff que permite reaproveitar evidências. O coordenador recebe a recomendação e decide integração dentro da autorização da sessão.
+After a fix or an integration: <new SHA, relevant diff, repeated checks, and result>. If only report or control files changed, identify the diff that lets you use the evidence again. The coordinator receives the recommendation and decides the integration inside the session authorization.

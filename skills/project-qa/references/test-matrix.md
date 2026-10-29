@@ -1,40 +1,41 @@
-# Escolher a menor matriz suficiente
+# Select the smallest sufficient matrix
 
-Use critérios reais da mudança; esta tabela é um ponto de partida, não uma obrigação de rodar todas as linhas. Respeite o prefixo RTK quando exigido pelo ambiente.
+Use the real criteria of the change. This table is a starting point. You do not have to run every row. Use the RTK prefix when the environment requires it.
 
-| Mudança | Verificação útil | Limite da evidência |
+| Change | Useful check | Limit of the evidence |
 | --- | --- | --- |
-| Skill/contrato/documentação | Validar metadados/links, executar exemplos alterados e testar uma solicitação realista se instruções forem complexas | Não criar testes que procuram palavras ou headings; leitura estrutural não prova decisões do agente |
-| Gerador/instalador | Rodar em diretório temporário; conferir arquivos/valores, recusa de sobrescrita, entradas inválidas e dados preservados | Não usar runtime pessoal para provar preservação |
-| Cliente HTTP | Servidor local controlado para payload, erros, timeout, redirecionamento e efeitos proibidos conforme o contrato alterado | Não chamar isso de inferência real |
-| Worktrees/locks | Clone temporário, tarefas concorrentes, exclusividade, limpeza/ancestralidade | Reservas são locais ao clone, não distribuídas |
-| Compose/Docker | Gerar instalação isolada e `docker compose --project-directory <instalacao> config --quiet`; se muda inicialização, build/up/health/down reais | Sintaxe/config não prova container iniciado; health não prova modelo carregado |
-| Inferência | GGUF autorizado, ready positivo e resposta não vazia coerente na API real | Sem modelo, critério de inferência obrigatório fica blocked; não baixar um modelo só para encerrar QA |
-| Jornada web alterada | Browser real, passos do usuário, assertions por estado/elemento e captura de falha | Aplicar Playwright apenas se útil/disponível; esperas fixas e prints sozinhos não provam sucesso |
-| Release/hotfix | Checks relevantes, versão/notas, CI e SHA candidato combinado | `check-release.py` verifica consistência local; não criar tag pública como experimento |
+| Skill, contract, or documentation | Check metadata and links. Run the changed examples. Test one realistic request if the instructions are complex | Do not create tests that search for words or headings. A structural read does not prove agent decisions |
+| Generator or installer | Run it in a temporary directory. Check files and values, overwrite refusal, invalid input, and preserved data | Do not use a personal runtime to prove preservation |
+| HTTP client | Use a controlled local server for payloads, errors, timeouts, redirects, and forbidden effects of the changed contract | Do not call this real inference |
+| Worktrees and locks | Temporary clone, concurrent tasks, exclusivity, cleanup, and ancestry | Claims are local to the clone. They are not distributed |
+| Compose or Docker | Generate an isolated installation and run `docker compose --project-directory <installation> config --quiet`. If startup changes, run a real build, up, health, and down | Valid syntax or config does not prove a started container. Health does not prove a loaded model |
+| Inference | Authorized GGUF model, positive ready result, and a coherent response that is not empty from the real API | Without a model, a required inference criterion is blocked. Do not download a model only to close QA |
+| Changed web journey | Real browser, user steps, assertions on state or elements, and a capture of failures | Use Playwright only when it is useful and available. Fixed waits and screenshots alone do not prove success |
+| Release or hotfix | Relevant checks, version and notes, CI, and the combined candidate SHA | `check-release.py` checks local consistency. Do not create a public tag as an experiment |
 
-Comandos usuais na raiz do local-layla:
+Usual commands in the local-layla root:
 
 ```bash
 python3 -m unittest discover -s tests -v
 python3 scripts/check-skills.py
 python3 scripts/check-vendor.py
-python3 scripts/check-plan.py docs/sdd/<mudanca>/plan.json
+python3 scripts/check-style.py
+python3 scripts/check-plan.py docs/sdd/<change>/plan.json
 bash -n skills/layla-docker/assets/container/layla
 ```
 
-Em teste de runtime paralelo, use instalação temporária própria, porta livre, `COMPOSE_PROJECT_NAME` exclusivo e diretórios de data/models/workspace não compartilhados. Finalize apenas recursos que o teste criou. Não confundir ambiente indisponível com defeito de produto nem com sucesso.
+For a parallel runtime test, use your own temporary installation, a free port, and a unique `COMPOSE_PROJECT_NAME`. Do not share the data, models, or workspace directories. Stop only the resources that the test created. An unavailable environment is not a product defect. It is also not a success.
 
-Para testes novos, derive esperado do contrato; confira se uma mudança plausível no comportamento os faria falhar. Na implementação de comportamento novo/correção, o implementador aplica TDD quando pertinente. QA pode evidenciar lacuna com uma reprodução sem assumir a correção.
+For new tests, get the expected result from the contract. Make sure that a plausible change in behavior makes the test fail. When the implementer adds new behavior or a fix, the implementer applies TDD when it fits. QA can show a gap with a reproduction. QA does not take over the fix.
 
-## Skills selecionadas como inspiração
+## Skills selected as models
 
-| Fonte primária | Aplicação nesta skill |
+| Primary source | Use in this skill |
 | --- | --- |
-| [Anthropic testing-strategy](https://github.com/anthropics/knowledge-work-plugins/blob/02ffa99ff00ce4d3046ccebabb8357cb39f3ab06/engineering/skills/testing-strategy/SKILL.md) | Selecionar níveis por risco e equilibrar confiança, tempo e manutenção |
-| [Superpowers verification-before-completion](https://github.com/obra/superpowers/blob/bb92a77741419a4ab5f06e711a283343f1ada0c3/skills/verification-before-completion/SKILL.md) | Exigir execução/evidência antes de alegar aprovação |
-| [Superpowers test-driven-development](https://github.com/obra/superpowers/blob/bb92a77741419a4ab5f06e711a283343f1ada0c3/skills/test-driven-development/SKILL.md) e [writing-good-tests](https://github.com/obra/superpowers/blob/bb92a77741419a4ab5f06e711a283343f1ada0c3/skills/test-driven-development/writing-good-tests.md) | Testar comportamento e regressões reais sem espelhar implementação |
-| [Superpowers systematic-debugging](https://github.com/obra/superpowers/blob/bb92a77741419a4ab5f06e711a283343f1ada0c3/skills/systematic-debugging/SKILL.md) | Reproduzir falhas e investigar causa antes da correção |
-| [Anthropic webapp-testing](https://github.com/anthropics/skills/blob/dbd4588f9e1033efb41dad4bef2f7947c8993d44/skills/webapp-testing/SKILL.md) | Condicional para interface local: observação no browser e evidências de jornada |
+| [Anthropic testing-strategy](https://github.com/anthropics/knowledge-work-plugins/blob/02ffa99ff00ce4d3046ccebabb8357cb39f3ab06/engineering/skills/testing-strategy/SKILL.md) | Select test levels by risk. Balance confidence, time, and maintenance |
+| [Superpowers verification-before-completion](https://github.com/obra/superpowers/blob/bb92a77741419a4ab5f06e711a283343f1ada0c3/skills/verification-before-completion/SKILL.md) | Require a run and evidence before a claim of approval |
+| [Superpowers test-driven-development](https://github.com/obra/superpowers/blob/bb92a77741419a4ab5f06e711a283343f1ada0c3/skills/test-driven-development/SKILL.md) and [writing-good-tests](https://github.com/obra/superpowers/blob/bb92a77741419a4ab5f06e711a283343f1ada0c3/skills/test-driven-development/writing-good-tests.md) | Test behavior and real regressions. Do not mirror the implementation |
+| [Superpowers systematic-debugging](https://github.com/obra/superpowers/blob/bb92a77741419a4ab5f06e711a283343f1ada0c3/skills/systematic-debugging/SKILL.md) | Reproduce failures and find the cause before the fix |
+| [Anthropic webapp-testing](https://github.com/anthropics/skills/blob/dbd4588f9e1033efb41dad4bef2f7947c8993d44/skills/webapp-testing/SKILL.md) | Only for a local interface: browser observation and journey evidence |
 
-Consulta: 2026-10-11. São referências de método; a skill é autocontida e não exige instalá-las. No repo local-layla as três skills Superpowers já estão em `vendor/superpowers/skills/`. A instrução explícita da sessão e o contrato local prevalecem. Não copiar instalações/hooks nem adicionar pytest/Playwright por associação. A comparação completa das candidatas fica na pesquisa SDD da mudança qa-test-agent do projeto.
+Date of access: 2026-10-11. These are method references. The skill is self-contained and does not require their installation. In the local-layla repository, the three Superpowers skills are already in `vendor/superpowers/skills/`. Explicit session instructions and the local contract have priority. Do not copy installations or hooks. Do not add pytest or Playwright only because a reference mentions them. The full comparison of the candidates is in the SDD research of the project's qa-test-agent change.

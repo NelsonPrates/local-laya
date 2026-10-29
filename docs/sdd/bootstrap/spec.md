@@ -1,12 +1,19 @@
-# Especificação do bootstrap
+# Bootstrap spec
 
-Entregar `NelsonPrates/local-layla` público e o projeto em `~/Documentos/local-layla`.
+Deliver the public `NelsonPrates/local-layla` repository and the project in `~/Documentos/local-layla`.
 
-- Skills autocontidas para gerar uma instalação Docker CPU do PapaKoftes/Layla e consultar a API local. Persistir dados/modelos/workspace e publicar porta somente no loopback.
-- Gerador não sobrescreve instalação existente; cliente usa somente localhost, desativa permissões de escrita/execução e distingue API disponível de modelo pronto.
-- Workflow de desenvolvimento/manutenção inicia por pesquisa, segue ao tech-planner e à execução escolhida de Superpowers; planos usam a menor ordem suficiente de tarefas claras, com dependências e verificação.
-- Codex e Claude leem o mesmo contrato e podem executar tarefas independentes em worktrees diferentes; reservar tarefas, evitar arquivos compartilhados e integrar serialmente.
-- Baixar as skills oficiais Superpowers com revisão fixa, licença e integridade verificável.
-- Gitflow com main/develop/feature/release/hotfix, CI e automação de publicação validada por tag. Nenhuma tag de release será publicada no bootstrap.
+- Self-contained skills that generate a CPU Docker installation of PapaKoftes/Layla and query the local API. Persist data, models, and the workspace. Publish the port only on loopback.
+- The generator does not overwrite an existing installation. The client uses only localhost, disables write and execution permissions, and separates an available API from a ready model.
+- The development and maintenance workflow starts with research, continues with the tech-planner, and then uses the selected Superpowers execution. Plans use the smallest sufficient order of clear tasks, with dependencies and checks.
+- Codex and Claude read the same contract and can run independent tasks in different worktrees. Claim tasks, avoid shared files, and integrate one at a time.
+- Download the official Superpowers skills at a fixed revision, with the license and verifiable integrity.
+- Gitflow with main, develop, feature, release, and hotfix branches, CI, and publication automation that a tag validates. The bootstrap publishes no release tag.
 
-Aceitação: skills válidas, testes de comportamento passando, Compose válido, teste real de inicialização com limite explícito de ausência de GGUF, planos validados, vendor íntegro, worktrees/reservas isoladas em teste e repositório remoto sincronizado.
+Acceptance:
+
+- valid skills and passing behavior tests
+- a valid Compose file
+- a real startup test, with the explicit limit of a missing GGUF model
+- validated plans and an intact vendor copy
+- worktrees and claims isolated in tests
+- a synchronized remote repository

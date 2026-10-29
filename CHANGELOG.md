@@ -2,13 +2,16 @@
 
 ## Unreleased
 
-- Agente QA/testes compartilhado por Codex e Claude, skill project-qa autocontida e seleção de referências primárias.
-- Matriz de testes no planejamento SDD e relatório com evidências antes da integração Gitflow.
+- Shared QA/testing agent for Codex and Claude, a self-contained project-qa skill, and a selection of primary references.
+- Test matrix in SDD planning and an evidence report before Gitflow integration.
+- All project files are now in English.
+- Vendored asd-ste100 skill. Skills, agents, and prompts follow ASD-STE100 Strict mode, and `scripts/check-style.py` checks them in CI.
+- The generator now sets `response_language` to `English` by default.
 
 ## 0.1.0
 
-- Skills de geração/instalação Docker, uso da API local e pesquisa do projeto.
-- Workflow SDD compartilhado por Codex e Claude, papel tech-planner e worktrees com reservas.
-- Superpowers vendorizado em revisão fixa e fluxo Gitflow de release/hotfix.
+- Skills for Docker generation and installation, local API use, and project research.
+- SDD workflow shared by Codex and Claude, the tech-planner role, and worktrees with claims.
+- Superpowers vendored at a fixed revision, and a Gitflow release and hotfix flow.
 
-Versão preparada no bootstrap; a existência desta seção não implica tag ou release publicada.
+The bootstrap prepared this version. This section does not mean that a tag or release was published.

@@ -7,23 +7,23 @@
   "tasks": [
     {
       "id": "T01",
-      "title": "Adicionar papel QA, skill, adaptadores e fluxo compartilhado",
+      "title": "Add the QA role, skill, adapters, and shared workflow",
       "owner": "coordinator",
       "estimate_minutes": 20,
       "depends_on": [],
       "files": ["skills/project-qa", "docs/workflow", "AGENTS.md", "CLAUDE.md", ".codex/agents/qa-test.toml", ".claude/agents/qa-test.md", "README.md", "CHANGELOG.md"],
-      "acceptance": "A1, A2, A3 e A5: contrato coerente, fontes selecionadas e relatório honesto por critério.",
-      "verify": "python3 scripts/check-skills.py; avaliar skill e adaptadores contra a spec; esperado: metadados válidos e nenhum bloqueador."
+      "acceptance": "A1, A2, A3, and A5: a coherent contract, selected sources, and an honest report for each criterion.",
+      "verify": "python3 scripts/check-skills.py; evaluate the skill and adapters against the spec; expected: valid metadata and no blockers."
     },
     {
       "id": "T02",
-      "title": "Verificar instalação, descoberta, comportamento e regressões",
+      "title": "Check installation, discovery, behavior, and regressions",
       "owner": "coordinator",
       "estimate_minutes": 15,
       "depends_on": ["T01"],
       "files": ["scripts/install-skills.py", "scripts/check-skills.py", ".agents/skills/project-qa", ".claude/skills/project-qa", "tests/test_layla.py", "tests/test_workflow.py", "docs/sdd/qa-test-agent"],
-      "acceptance": "A4 demonstrado por instalação independente e preservação; QA e revisão com evidências A1–A5.",
-      "verify": "python3 -m unittest discover -s tests -v; python3 scripts/check-skills.py; python3 scripts/check-vendor.py; python3 scripts/check-plan.py docs/sdd/qa-test-agent/plan.json; esperado: exit 0 e relatório sem bloqueadores."
+      "acceptance": "A4 shown by independent installation and preservation. QA and review with evidence for A1–A5.",
+      "verify": "python3 -m unittest discover -s tests -v; python3 scripts/check-skills.py; python3 scripts/check-vendor.py; python3 scripts/check-plan.py docs/sdd/qa-test-agent/plan.json; expected: exit 0 and a report without blockers."
     }
   ]
 }

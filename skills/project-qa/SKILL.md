@@ -1,30 +1,30 @@
 ---
 name: project-qa
-description: Planejar e executar QA de mudanças de local-layla, mapear critérios de aceitação a testes e relatar evidências antes de integração ou release. Usar na revisão do plano e após implementação, inclusive para regressões de scripts, skills, API local e Docker.
+description: Plan and run QA for local-layla changes, map acceptance criteria to tests, and report evidence before integration or release. Use it during plan review and after implementation, also for regressions in scripts, skills, the local API, and Docker.
 ---
 
-# QA de desenvolvimento e manutenção
+# QA for development and maintenance
 
-Transforme critérios de aceitação em evidência reproduzível. Leia o pedido, o contrato do projeto alvo, pesquisa, spec/plano e diff atribuídos. Se esta skill foi instalada fora do repo, procure esses artefatos na raiz do projeto alvo; todos os recursos desta skill são relativos a esta pasta, sem exigir checkout ou Superpowers instalado.
+Turn acceptance criteria into reproducible evidence. Read the request, the target project contract, the research, the spec, the plan, and the assigned diff. If this skill is installed outside the repository, look for these artifacts in the root of the target project. All resources of this skill are relative to this folder. The skill does not need a checkout or an installed Superpowers copy.
 
-## Planejar os testes
+## Plan the tests
 
-Depois da pesquisa e junto ao plano técnico, escolha o menor conjunto que detecta falhas plausíveis. Leia [a matriz por tipo de mudança](references/test-matrix.md). Para cada critério, registre cenário, nível de teste, comando/procedimento, resultado esperado, ambiente e se é obrigatório. Cubra erro/limite quando puder causar regressão concreta. Reutilize unittest e ferramentas existentes; não adicionar dependência, teste de prosa ou etapa sem benefício demonstrável.
+After the research, and together with the technical plan, select the smallest set of tests that finds plausible failures. Read [the matrix by change type](references/test-matrix.md). For each criterion, record the scenario, the test level, the command or procedure, the expected result, the environment, and whether it is required. Cover error and limit cases when they can cause a concrete regression. Use unittest and the existing tools. Do not add a dependency, a prose test, or a step without a demonstrated benefit.
 
-Devolva a matriz ao planejador/coordenador. Para uma mudança pequena ela pode ficar no próprio plano; quando for extensa, escreva `qa-plan.md` no diretório SDD atribuído. Não mude spec/plano compartilhados se outro agente for dono. A execução de implementação continua com a skill Superpowers escolhida no plano do projeto.
+Return the matrix to the planner or the coordinator. For a small change, the matrix can stay in the plan. For a large change, write `qa-plan.md` in the assigned SDD directory. Do not change the shared spec or plan if another agent owns them. The implementation continues with the Superpowers skill that the project plan selects.
 
-## Verificar a entrega
+## Check the delivery
 
-1. Confirme SHA/base, diff, escopo, ambiente e matriz antes de rodar. Se houver mudanças não commitadas, registre-as; não apresente o SHA sozinho como identidade do conteúdo testado. Use checkout/worktree estável sem outro escritor; para tarefas paralelas, receba arquivos e recursos exclusivos do coordenador.
-2. Rode as verificações obrigatórias aplicáveis, leia resultado e exit code. Teste comportamento observável: dados preservados, resposta HTTP, conflito recusado, serviço acessível. Um mock prova o contrato simulado; não prova inferência, Docker ou browser real.
-3. Para falha, reproduza e registre entrada, passos mínimos, esperado/obtido, evidência e impacto. Diferencie defeito de produto, problema de teste e bloqueio ambiental sem adivinhar causa. Encaminhe ao implementador; não modifique produto, enfraqueça asserções ou faça retries até parecer verde. Registre intermitência. Depois da correção, reexecute o cenário e a regressão afetada.
-4. Preencha [o relatório](references/report-template.md) em `docs/sdd/<mudanca>/qa-report.md`, ou no caminho atribuído. Registre comandos reais, resultados, commit, limitações e decisão por critério: **pass**, **fail**, **blocked** ou **not-run**. `pass` exige evidência atual; requisito obrigatório sem ambiente/evidência é `blocked`; `not-run` exige razão e classificação de escopo. Um check verde não compensa outro obrigatório omitido.
-5. Recomende **pass** para integração somente quando todos os critérios/checks obrigatórios aplicáveis passarem e não houver defeito bloqueador aberto. Havendo falha obrigatória, recomende **fail**; sem falhas mas com verificação obrigatória indisponível, **blocked**. Fora do escopo pode ser `not-run` com justificativa. Entregue o relatório ao coordenador; QA não faz merge, tag ou release.
+1. Before you run tests, check the SHA and base, the diff, the scope, the environment, and the matrix. Record any uncommitted changes. If uncommitted changes exist, the SHA alone does not identify the tested content. Use a stable checkout or worktree with no other writer. For parallel tasks, get exclusive files and resources from the coordinator.
+2. Run the applicable required checks. Read each result and exit code. Test observable behavior: preserved data, HTTP responses, refused conflicts, and reachable services. A mock proves only the simulated contract. It does not prove inference, Docker, or a real browser.
+3. For a failure, reproduce it. Record the input, the minimum steps, the expected and actual results, the evidence, and the impact. Identify the type: product defect, test problem, or environment block. Do not guess the cause. Send the failure to the implementer. Do not change the product, weaken assertions, or retry until the result is green. Record intermittent results. After the fix, run the scenario and the affected regression again.
+4. Fill in [the report](references/report-template.md) in `docs/sdd/<change>/qa-report.md`, or in the assigned path. Record the real commands, results, commit, limits, and a decision for each criterion: **pass**, **fail**, **blocked**, or **not-run**. `pass` needs current evidence. A required item without an environment or evidence is `blocked`. `not-run` needs a reason and a scope class. A green check does not replace a missing required check.
+5. Recommend **pass** for integration only when all applicable required criteria and checks pass and no blocking defect is open. If a required item fails, recommend **fail**. If nothing fails but a required check is not available, recommend **blocked**. An out-of-scope item can be `not-run` with a reason. Give the report to the coordinator. QA does not merge, tag, or release.
 
-Evidência vale para o conteúdo testado. Alteração posterior de código, testes, configuração ou dependências exige revalidar os checks afetados e registrar o novo SHA. Um commit só de relatório/controle não invalida automaticamente resultados: examine o diff e explique o reaproveitamento. Verifique novamente o resultado combinado de branches; CI/testes de cada feature isolada não demonstram a combinação.
+Evidence applies only to the tested content. A later change to code, tests, configuration, or dependencies requires a new run of the affected checks. Record the new SHA. A commit that changes only the report or control files does not automatically invalidate the results. Examine the diff and explain why the evidence still applies. Check the combined result of the branches again. CI or tests of one isolated feature do not prove the combination.
 
-## Limites e continuidade
+## Limits and continuity
 
-Escreva apenas relatório/matriz e testes expressamente atribuídos. Novos testes devem detectar um defeito plausível; se forem necessários, use tarefa/worktree própria e confirme que entram na validação final. Diagnóstico não autoriza correções silenciosas de produto. Não baixar modelos grandes, aprovar ações pendentes do Layla, alterar credenciais ou publicar remotamente para testar sem autorização correspondente. Preserve dados existentes e registre evidência sem tokens, dados pessoais ou conteúdo privado.
+Write only the report, the matrix, and the tests that the coordinator assigns to you. Each new test must find a plausible defect. If new tests are necessary, use a separate task and worktree. Make sure that the final check includes them. A diagnosis does not authorize silent product fixes. Do not download large models, approve pending Layla actions, change credentials, or publish to a remote without the related authorization. Keep existing data. Record evidence without tokens, personal data, or private content.
 
-O papel de QA verifica aceitação/risco; revisão de código verifica a implementação e continua no fluxo existente. Em sessão sem delegação, o coordenador pode aplicar esta skill em uma passagem separada, registrando que foi autoavaliação.
+The QA role checks acceptance and risk. Code review checks the implementation and stays in the existing workflow. In a session without delegation, the coordinator can apply this skill in a separate pass. The coordinator records that the pass is a self-assessment.

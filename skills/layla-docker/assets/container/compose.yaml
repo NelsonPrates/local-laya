@@ -4,7 +4,7 @@ services:
     build:
       context: .
       args:
-        LAYLA_REV: ${LAYLA_REV:?Execute setup.py primeiro}
+        LAYLA_REV: ${LAYLA_REV:?Run setup.py first}
     image: local-layla:${LAYLA_REV}
     user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
     ports:

@@ -1,38 +1,38 @@
-# Relatório QA: qa-test-agent
+# QA report: qa-test-agent
 
-Data: 2026-10-11 (UTC). Modo: revisão e forward-test independentes, consolidação pelo coordenador.
-Alvo: `550a6b4ee135e4bba8b039b5ea7695e30e31f698`; base: `0ef523ff86f68ef4fe3b5a953235deb95bcdc833`.
-Worktree limpa no momento da revisão independente. Ambiente: Linux, Python 3.10.12; testes HTTP/instalação/worktrees usam recursos temporários locais. Não houve mudança no runtime Layla.
+Date: 2026-10-11 (UTC). Mode: independent review and forward test, consolidated by the coordinator.
+Target: `550a6b4ee135e4bba8b039b5ea7695e30e31f698`. Base: `0ef523ff86f68ef4fe3b5a953235deb95bcdc833`.
+The worktree was clean during the independent review. Environment: Linux, Python 3.10.12. HTTP, installation, and worktree tests use local temporary resources. The Layla runtime did not change.
 
-| Critério/check | Obrigatório? | Comando/procedimento real | Esperado | Obtido/exit | Estado |
+| Criterion or check | Required? | Real command or procedure | Expected | Actual and exit | Status |
 | --- | --- | --- | --- | --- | --- |
-| A1/A2: fluxo e referências | Sim | Revisão independente de diff, spec, plano e pesquisa | QA após execução, planejamento proporcional, fontes adequadas | Nenhum achado; referências primárias em revisões fixas | pass |
-| A3: adaptadores | Sim | Parse TOML com tomli já presente no pip do host, YAML com parser instalado; comparação ao contrato oficial | Name/description/instruções, Bash Claude, modelo herdado | Parse e assertions exit 0; ambos leem contrato comum | pass |
-| A4: portabilidade/preservação | Sim | `rtk proxy python3 -m unittest discover -s tests -v` | Instalação independente, recursos copiados, destinos preservados, links válidos | 25 testes, exit 0; repetido pelo revisor independente | pass |
-| A5: decisões da skill | Sim | Agente independente com fixture realista isolado | Evidências por critério, nenhum falso positivo | Detectou perda de dados apesar de teste verde; obrigatório indisponível blocked; recomendou fail | pass |
-| Metadados/links | Sim | `rtk proxy python3 scripts/check-skills.py` e quick_validate.py da skill-creator para project-qa | Quatro skills válidas e recursos presentes | Exit 0 em ambos | pass |
-| Vendor | Sim | `rtk proxy python3 scripts/check-vendor.py` | Cópia intacta | 76 arquivos íntegros; exit 0 | pass |
-| Plano | Sim | `rtk proxy python3 scripts/check-plan.py docs/sdd/qa-test-agent/plan.json` | DAG válido T01 → T02 | Exit 0 | pass |
-| Bash | Sim, regressão usual | `rtk proxy bash -n skills/layla-docker/assets/container/layla` | Sintaxe válida | Exit 0 | pass |
-| Docker real/GGUF/browser | Não, runtime/API/UI não mudaram | Não executado | Fora do escopo desta mudança | Sem alegação de container/inferência/interface real | not-run |
-| Execução nativa de sessões Codex/Claude | Não nesta entrega de configuração | Não lançada | Validar arquivos e contrato sem abrir sessões externas | Formatos verificados; avaliação usa subagente disponível nesta sessão | not-run |
+| A1/A2: workflow and references | Yes | Independent review of the diff, spec, plan, and research | QA after execution, proportional planning, suitable sources | No findings. Primary references at fixed revisions | pass |
+| A3: adapters | Yes | Parse TOML with the tomli copy already present in the host pip, and YAML with the installed parser. Compare with the official contract | Name, description, instructions, Claude Bash access, inherited model | Parse and assertions exit 0. Both read the common contract | pass |
+| A4: portability and preservation | Yes | `rtk proxy python3 -m unittest discover -s tests -v` | Independent installation, copied resources, preserved targets, valid links | 25 tests, exit 0. The independent reviewer repeated the run | pass |
+| A5: skill decisions | Yes | Independent agent with a realistic isolated fixture | Evidence for each criterion, no false positives | Found data loss despite a green test. Required unavailable check blocked. Recommended fail | pass |
+| Metadata and links | Yes | `rtk proxy python3 scripts/check-skills.py` and skill-creator quick_validate.py for project-qa | Four valid skills with their resources | Exit 0 for both | pass |
+| Vendor | Yes | `rtk proxy python3 scripts/check-vendor.py` | Intact copy | 76 intact files. Exit 0 | pass |
+| Plan | Yes | `rtk proxy python3 scripts/check-plan.py docs/sdd/qa-test-agent/plan.json` | Valid DAG T01 → T02 | Exit 0 | pass |
+| Bash | Yes, usual regression | `rtk proxy bash -n skills/layla-docker/assets/container/layla` | Valid syntax | Exit 0 | pass |
+| Real Docker, GGUF, browser | No, the runtime, API, and UI did not change | Not run | Out of scope for this change | No claim about a real container, inference, or interface | not-run |
+| Native Codex and Claude sessions | No, not in this configuration delivery | Not started | Check files and the contract without external sessions | Formats checked. The evaluation uses a subagent available in this session | not-run |
 
-## Defeitos e bloqueios
+## Defects and blocks
 
-Nenhum aberto no produto alterado. Na fase RED, os dois cenários de instalação falharam: a quarta skill não era copiada e sua existência não impedia instalação parcial das outras. A inclusão de project-qa na lista pré-validada corrigiu ambos; GREEN e suíte completa confirmaram.
+None open in the changed product. In the RED phase, both installation scenarios failed. The installer did not copy the fourth skill. Its presence also did not prevent a partial installation of the other skills. Adding project-qa to the pre-checked list fixed both. GREEN and the full suite confirmed the fix.
 
-O parse inicial via tomllib/tomli standalone não estava disponível no Python 3.10 do host. Usado o tomli já fornecido pelo pip, sem adicionar dependência ao projeto. O parser é apenas uma ferramenta de validação local.
+The first TOML parse failed, because neither tomllib nor a standalone tomli was available in the host Python 3.10. The check used the tomli copy that pip already supplies, without adding a project dependency. The parser is only a local check tool.
 
-O defeito do fixture de forward-test é intencionalmente externo ao produto e não afeta esta recomendação. Consulte [forward-test.md](forward-test.md).
+The forward-test fixture defect is intentionally outside the product and does not affect this recommendation. See [forward-test.md](forward-test.md).
 
-## Revisão independente
+## Independent review
 
-Agente `qa_workflow_review`, contexto novo, revisou `0ef523f..550a6b4`, executou os 25 testes e checks, confirmou HEAD/checkout inalterados e retornou Ready to merge: Yes, sem achados críticos/importantes/menores. Pediu consolidar relatório e forward-test; ambos estão neste diretório.
+Agent `qa_workflow_review` worked in a new context. It reviewed `0ef523f..550a6b4`, ran the 25 tests and the checks, and confirmed that HEAD and the checkout did not change. It returned "Ready to merge: Yes", with no critical, important, or minor findings. It asked to consolidate the report and the forward test. Both are in this directory.
 
-Declined to judge e decisão do coordenador: runtime/GGUF/browser não mudaram e estão fora do escopo; gate automatizado textual foi excluído pela spec; publicação de versão/proteção remota não pertence ao pedido. Nenhuma dessas exclusões oculta um check obrigatório desta mudança.
+Items the reviewer declined to judge, and the coordinator decision: the runtime, GGUF, and browser did not change and are out of scope. The spec excluded an automated text gate. Version publication and remote protection are not part of the request. None of these exclusions hides a required check of this change.
 
-## Decisão e revalidação
+## Decision and new check
 
-**pass** para integração da feature em develop: todos os critérios/checks obrigatórios desta mudança passaram; não há bloqueador aberto. A exigência de relatório é um contrato processual, sem novo gate automatizado no CI.
+**pass** for integration of the feature into develop: all required criteria and checks of this change passed, and no blocker is open. The report requirement is a process contract, without a new automated gate in CI.
 
-Os commits seguintes de consolidação deste diretório alteram apenas artefatos administrativos; verificar o diff para reaproveitar os resultados de 550a6b4. Antes de integrar, confirmar CI verde no head publicado. Se código/testes/configuração ou a base de integração mudar, repetir os checks afetados no conteúdo combinado e registrar o novo SHA.
+The later consolidation commits of this directory change only administrative artifacts. Review the diff to use the results of 550a6b4 again. Before integration, confirm that CI is green on the published head. If code, tests, configuration, or the integration base change, repeat the affected checks on the combined content and record the new SHA.

@@ -1,42 +1,47 @@
-# Releases baseadas em Gitflow
+# Gitflow-based releases
 
-## Branches e integração
+## Branches and integration
 
-| Branch | Parte de | Integra em | Responsabilidade |
+| Branch | Starts from | Merges into | Purpose |
 | --- | --- | --- | --- |
-| `main` | bootstrap | — | Código estabilizado; tags públicas |
-| `develop` | `main` | `release/*` | Integração da próxima versão |
-| `feature/<mudanca>/<tarefa>-<agente>` | `develop` atualizado | `develop` | Uma tarefa/entrega revisável |
-| `release/X.Y.Z` | `develop` | `main`, depois `develop` | Estabilização, versão, notas e correções |
-| `hotfix/X.Y.Z` | `main` | `main`, depois `develop` e release ativa | Correção urgente da linha publicada |
+| `main` | bootstrap | — | Stable code and public tags |
+| `develop` | `main` | `release/*` | Integration of the next version |
+| `feature/<change>/<task>-<agent>` | up-to-date `develop` | `develop` | One reviewable task or delivery |
+| `release/X.Y.Z` | `develop` | `main`, then `develop` | Stabilization, version, notes, and fixes |
+| `hotfix/X.Y.Z` | `main` | `main`, then `develop` and the active release | Urgent fix of the published line |
 
-Um coordenador integra PRs serialmente. Preferir merge commits (`--no-ff`) para preservar proveniência e permitir ao script de worktrees confirmar ancestralidade. Se usar squash, conservar o SHA do merge e revisar a equivalência antes de limpar a worktree manualmente; `finish` recusa ancestralidade ausente.
+One coordinator integrates PRs one at a time. Use merge commits (`--no-ff`). They keep the provenance and let the worktree script confirm ancestry. If you squash, keep the merge SHA and review the equivalence before you clean up the worktree manually. `finish` refuses to run when the ancestry is missing.
 
-Features chegam a `develop` com revisão e recomendação fundamentada do [qa-test](qa-test.md). Falha/check obrigatório bloqueado volta ao implementador. Revalidar o resultado combinado antes de liberar dependentes; relatórios de features isoladas não provam a combinação. Evidências de QA referem-se ao conteúdo testado e precisam de comparação do diff para reaproveitamento.
+Features reach `develop` with a review and a recommendation with reasons from [qa-test](qa-test.md). A failure or a blocked required check goes back to the implementer. Check the combined result again before you release dependent tasks. Reports for isolated features do not prove the combination. QA evidence applies to the tested content. To use it again, compare the diff.
 
-## Release normal
+## Normal release
 
-1. Confirmar PRs planejados integrados e CI verde em `develop`. Criar `release/X.Y.Z` a partir de `origin/develop` atualizado; congelar features nessa branch.
-2. Atualizar `VERSION` e `CHANGELOG.md` com a mesma versão. Usar SemVer: patch para correções compatíveis, minor para capacidades compatíveis, major para incompatibilidades de contrato/comandos.
-3. Rodar os checks de scripts/skills, validar Compose e conferir as evidências de container/inferência pertinentes. O QA verifica o candidato estabilizado e registra SHA, resultados e limitações em `qa-report.md` da mudança de release; checks obrigatórios devem passar. Registrar alterações de revisão upstream/Superpowers. Abrir PR `release/X.Y.Z` → `main` e revisar o resultado.
-4. Após a revisão e a autorização de merge/publicação que couber à sessão, integrar em `main`; confirmar CI verde no commit final. Criar tag anotada **`vX.Y.Z` apontando para esse commit de `main`** e enviar a tag. Não marcar a feature ou um commit anterior.
-5. A Action `release.yml` valida tag/versão, ancestralidade em `main`, notas e testes antes de criar a GitHub Release com o arquivo das skills. Publicar a tag é o gatilho de publicação; não é apenas um pedido de validação.
-6. Fazer backmerge de `main` para `develop` e para uma release ativa que ainda precise das correções. Rodar CI no resultado; depois remover a branch de release concluída.
+1. Make sure that the planned PRs are merged and that CI is green on `develop`. Create `release/X.Y.Z` from an up-to-date `origin/develop`. Freeze features on this branch.
+2. Update `VERSION` and `CHANGELOG.md` to the same version. Use SemVer: patch for compatible fixes, minor for compatible capabilities, and major for incompatible changes to contracts or commands.
+3. Run the script and skill checks, validate Compose, and review the relevant container and inference evidence. QA checks the stabilized candidate and records the SHA, results, and limits in the `qa-report.md` of the release change. Required checks must pass. Record changes to the upstream or Superpowers revision. Open a PR from `release/X.Y.Z` to `main` and review the result.
+4. After the review, and with the merge and publication authorization that applies to the session, merge into `main`. Make sure that CI is green on the final commit. Create an annotated tag **`vX.Y.Z` that points to this `main` commit** and push the tag. Do not tag the feature branch or an earlier commit.
+5. The `release.yml` Action checks the tag and version, the ancestry in `main`, the notes, and the tests. Then it creates the GitHub Release with the skills archive. Pushing the tag publishes the release. It is not only a request for validation.
+6. Merge `main` back into `develop` and into any active release that still needs the fixes. Run CI on the result. Then delete the completed release branch.
 
 ## Hotfix
 
-Criar `hotfix/X.Y.Z` de `origin/main`, manter a pesquisa e o plano proporcionais ao defeito, corrigir e verificar com QA do cenário de regressão e checks afetados. Atualizar versão/notas, revisar PR para `main`, integrar e publicar tag como acima. Propagar a correção para `develop` e para qualquer release ativa, revalidando a combinação antes de encerrar. Não misturar features pendentes de `develop` com a correção de produção.
+1. Create `hotfix/X.Y.Z` from `origin/main`. Keep the research and the plan in proportion to the defect.
+2. Fix the defect. Check it with a QA run of the regression scenario and the affected checks.
+3. Update the version and notes, review the PR to `main`, merge it, and publish the tag as above.
+4. Merge the fix into `develop` and into any active release. Check the combination again before you close the hotfix.
 
-## Automação e proteção
+Do not mix pending `develop` features with the production fix.
 
-`ci.yml` valida pushes e PRs. `release.yml` executa somente em tags `v*`, com `contents: write` restrito ao job de publicação; seu check exige versão SemVer, notas correspondentes e commit ancestral de `main`.
+## Automation and protection
 
-Recomendado no GitHub: proteger `main` e `develop`, exigir PR, review e o check `skills-and-scripts`, proibir force-push/exclusão e restringir tags `v*` ao mantenedor/coordenador. Isso depende de regras da conta/repositório: documentação não significa proteção já aplicada. O workflow não consegue impedir o push inicial de uma tag inválida; ele impede sua publicação como Release.
+`ci.yml` checks pushes and PRs. `release.yml` runs only on `v*` tags, and only its publish job has `contents: write`. Its check requires a SemVer version, matching notes, and a commit that is an ancestor of `main`.
 
-O bootstrap entrega `main` e `develop`, mas não cria uma tag/release sem pedido. Publicação inicial do repositório e publicação de uma versão são ações distintas.
+Recommended GitHub settings: protect `main` and `develop`, require a PR, a review, and the `skills-and-scripts` check, block force-push and deletion, and restrict `v*` tags to the maintainer or coordinator. These settings depend on the account and repository rules. This documentation does not mean that the protection is active. The workflow cannot prevent the first push of an invalid tag. It does prevent its publication as a Release.
 
-## Fontes
+The bootstrap delivers `main` and `develop`, but it does not create a tag or release unless someone asks. The first publication of the repository and the publication of a version are separate actions.
 
-- [Gitflow, releases e hotfixes](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow)
+## Sources
+
+- [Gitflow, releases, and hotfixes](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow)
 - [Git worktree](https://git-scm.com/docs/git-worktree)
-- [GitHub Actions: eventos de push/tags](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#push)
+- [GitHub Actions: push and tag events](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#push)

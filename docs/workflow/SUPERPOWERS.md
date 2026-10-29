@@ -1,47 +1,56 @@
-# Superpowers local
+# Local Superpowers
 
-Origem: [obra/superpowers](https://github.com/obra/superpowers), revisão
-`bb92a77741419a4ab5f06e711a283343f1ada0c3`, consultada/baixada em 2026-10-11.
-Foram incluídas as 15 skills completas, seus recursos e executáveis, README e licença MIT.
-`vendor/superpowers/source.lock.json` registra SHA-256 de cada arquivo. Os links
-de descoberta não duplicam ou reescrevem os arquivos upstream.
+Source: [obra/superpowers](https://github.com/obra/superpowers), revision
+`bb92a77741419a4ab5f06e711a283343f1ada0c3`, read and downloaded on 2026-10-11.
+The copy includes the 15 complete skills, their resources and executables, the
+README, and the MIT license. `vendor/superpowers/source.lock.json` records the
+SHA-256 of each file. The discovery links do not duplicate or rewrite the
+upstream files.
 
-## Roteamento do projeto
+## Project routing
 
-| Situação | Skill local |
+| Situation | Local skill |
 | --- | --- |
-| Começar a execução após pesquisa/plano | `using-superpowers`, depois a execução do plano |
-| Executar diretamente na sessão | `executing-plans` |
-| Controlar implementadores e revisão por tarefa | `subagent-driven-development` |
-| Isolar workspace | `using-git-worktrees` + reserva de `scripts/worktree.py` |
-| Paralelizar investigações/tarefas independentes | `dispatching-parallel-agents`, com os limites de arquivos/worktrees do projeto |
-| Investigar falha | `systematic-debugging` |
-| Implementar comportamento verificável | `test-driven-development`, proporcional à mudança |
-| Revisar | `requesting-code-review` / `receiving-code-review` |
-| Declarar conclusão | `verification-before-completion` |
-| Verificar aceitação após execução/revisão | `project-qa`, com `verification-before-completion`; investigação via `systematic-debugging` |
-| Encerrar feature | `finishing-a-development-branch`, integrando em `develop` conforme Gitflow |
+| Start execution after research and planning | `using-superpowers`, then the plan's execution skill |
+| Execute directly in the session | `executing-plans` |
+| Control implementers with a review for each task | `subagent-driven-development` |
+| Isolate the workspace | `using-git-worktrees` and a claim from `scripts/worktree.py` |
+| Run independent investigations or tasks in parallel | `dispatching-parallel-agents`, within the project's file and worktree limits |
+| Investigate a failure | `systematic-debugging` |
+| Implement verifiable behavior | `test-driven-development`, in proportion to the change |
+| Review | `requesting-code-review` / `receiving-code-review` |
+| Claim completion | `verification-before-completion` |
+| Check acceptance after execution and review | `project-qa`, with `verification-before-completion`. Investigate with `systematic-debugging` |
+| Finish a feature | `finishing-a-development-branch`, merging into `develop` per Gitflow |
+| Write or review prompt text | `asd-ste100` (vendored in `vendor/asd-ste100/`), then `python3 scripts/check-style.py` |
 
-`writing-plans` apoia o tech-planner, sem deslocar a pesquisa da primeira etapa.
-O texto upstream pode sugerir modelos, ferramentas, caminhos, gates e opções de
-merge genéricos; prevalecem as instruções explícitas da sessão e o contrato local.
-Use as ferramentas realmente disponíveis e preserve escolhas já autorizadas.
-Não pedir uma segunda autorização para o mesmo escopo por causa de um default.
+`writing-plans` supports the tech-planner. It does not move research out of the
+first step. The upstream text can suggest generic models, tools, paths, gates,
+and merge options. The explicit session instructions and the local contract have
+priority. Use the tools that are actually available, and keep the choices that
+the user already authorized. Do not ask for a second authorization of the same
+scope because of a library default.
 
-As referências do upstream descrevem instalações por plugin em alguns harnesses.
-Esta cópia disponibiliza as skills como arquivos locais; não instala os hooks nem
-promete todos os comportamentos do plugin. A ativação do processo é explícita em
-`AGENTS.md`/`CLAUDE.md`. Em ferramentas sem descoberta, abrir diretamente `SKILL.md`.
+Some upstream references describe plugin installations for specific harnesses.
+This copy supplies the skills as local files. It does not install the hooks, and
+it does not promise every plugin behavior. `AGENTS.md` and `CLAUDE.md` activate
+the process explicitly. In tools without skill discovery, open `SKILL.md`
+directly.
 
-## Atualização
+## Update a vendored library
 
-Abrir uma mudança SDD: pesquisar a revisão desejada, diferenças de fluxo, licença e
-compatibilidade com Codex/Claude. Baixar as pastas completas de `skills/` no SHA
-selecionado; preservar bytes e modos executáveis do Git de origem. Atualizar também
-README e LICENSE, conferir diferenças e regenerar o lock conscientemente a partir
-da árvore verificada. Não regenerar hashes apenas para esconder uma alteração local.
+This procedure applies to `vendor/superpowers/` and `vendor/asd-ste100/`.
 
-Executar `python3 scripts/check-vendor.py`, validar os links locais e revisar o
-roteamento acima. O verificador detecta mudança de arquivos contra o lock, mas não
-é uma assinatura criptográfica do autor; a revisão do download/origem continua
-sendo parte da manutenção.
+1. Open an SDD change. Research the new revision, the workflow differences, the
+   license, and the compatibility with Codex and Claude.
+2. Download the complete skill folders at the selected SHA. Keep the bytes and
+   the executable modes from the source Git repository.
+3. Update the README and LICENSE too. Review the differences.
+4. Generate the lock again from the reviewed tree. Never generate hashes only to
+   hide a local change.
+5. Run `python3 scripts/check-vendor.py`, check the local links, and review the
+   routing above.
+
+The checker detects file changes against the lock. It is not a cryptographic
+signature of the author. Review of the download and its source is still part of
+the maintenance.

@@ -1,70 +1,79 @@
-# Desenvolvimento orientado por especificação (SDD)
+# Spec-driven development (SDD)
 
-Este é o fluxo compartilhado de desenvolvimento e manutenção, independente do provedor. Nesta documentação, SDD significa **spec-driven development**; a skill Superpowers `subagent-driven-development` é uma das formas de execução, não a definição do fluxo inteiro.
+This is the shared development and maintenance workflow. It does not depend on one provider. In this documentation, SDD means **spec-driven development**. The Superpowers skill `subagent-driven-development` is one way to execute a plan. It is not the name of the whole workflow.
 
-## Sequência mínima
+## Minimum sequence
 
-1. **Pesquisa:** usar `skills/project-research/SKILL.md`. Registrar em `docs/sdd/<mudanca>/research.md` o problema, estado atual, evidências primárias, alternativas relevantes, decisão recomendada e dúvidas que mudam a implementação. Uma correção pequena pode ter uma pesquisa de poucos parágrafos. Sem código de produto nesta etapa.
-2. **Plano técnico:** o papel [tech-planner](tech-planner.md) transforma a pesquisa em `spec.md`, `plan.md` e `plan.json` no mesmo diretório. A especificação descreve comportamento e critérios de aceitação; o plano escolhe a menor sequência de entregas verificáveis. Incluir arquivos, dependências, dono, verificação e condições de conclusão por tarefa. O papel [qa-test](qa-test.md) contribui com a menor matriz de testes suficiente, no plano ou em `qa-plan.md` quando extensa. Validar com `python3 scripts/check-plan.py docs/sdd/<mudanca>/plan.json`.
-3. **Execução Superpowers:** ler `vendor/superpowers/skills/using-superpowers/SKILL.md` e a skill de execução registrada no plano. Para execução nativa/sequencial, `executing-plans`; para controlador com implementadores e revisão por tarefa, `subagent-driven-development`. As skills escolhidas conduzem worktrees, TDD quando pertinente, revisão, correções e verificação final. Ler somente os recursos relevantes. Não inventar ferramentas de subagentes ausentes.
-4. **QA/testes:** o papel [qa-test](qa-test.md), usando `skills/project-qa/SKILL.md`, verifica os critérios no SHA estável entregue e registra `qa-report.md` com comandos, resultados e limitações. Falha retorna ao implementador; correção exige revalidação. Um check obrigatório omitido/falho impede recomendar integração. QA complementa a revisão Superpowers, sem repetir sua revisão estrutural.
-5. **Integração e release:** entregar revisão, relatório QA e PR da feature para `develop`; revalidar o resultado combinado. Seguir [RELEASE.md](RELEASE.md) para estabilização, `main`, tag e publicação. O CI atual executa checks; a leitura do relatório QA é responsabilidade do coordenador, sem gate automatizado de texto.
+1. **Research:** use `skills/project-research/SKILL.md`. In `docs/sdd/<change>/research.md`, record the problem, the current state, the primary evidence, the relevant alternatives, the recommended decision, and the open questions that change the implementation. A small fix can have a research note of a few paragraphs. Do not write product code in this step.
+2. **Technical plan:** the [tech-planner](tech-planner.md) role turns the research into `spec.md`, `plan.md`, and `plan.json` in the same directory. The spec describes behavior and acceptance criteria. The plan selects the smallest sequence of verifiable deliveries. For each task, include the files, dependencies, owner, check, and completion conditions. The [qa-test](qa-test.md) role adds the smallest sufficient test matrix, in the plan or in `qa-plan.md` when it is long. Validate the plan with `python3 scripts/check-plan.py docs/sdd/<change>/plan.json`.
+3. **Superpowers execution:** read `vendor/superpowers/skills/using-superpowers/SKILL.md` and the execution skill that the plan records. For native, sequential execution, use `executing-plans`. For a controller with implementers and a review for each task, use `subagent-driven-development`. The selected skills drive worktrees, TDD where it applies, review, fixes, and the final check. Read only the relevant resources. Do not invent subagent tools that are not available.
+4. **QA and tests:** the [qa-test](qa-test.md) role uses `skills/project-qa/SKILL.md` to check the criteria on the delivered stable SHA. It writes `qa-report.md` with the commands, results, and limits. A failure goes back to the implementer, and a fix needs a new check. A required check that is missing or fails blocks an integration recommendation. QA adds to the Superpowers review. It does not repeat the structural review.
+5. **Integration and release:** deliver the review, the QA report, and the feature PR to `develop`. Check the combined result again. Follow [RELEASE.md](RELEASE.md) for stabilization, `main`, tags, and publication. The current CI runs the checks. The coordinator reads the QA report. No automated gate reads its text.
 
-O planejamento pode usar `writing-plans` como método, mas preserva esta ordem e estes caminhos. A análise de intenção de `brainstorming`, quando necessária, ocorre dentro da pesquisa, sem reiniciar uma descoberta já concluída. O pedido explícito do usuário e as instruções deste projeto têm precedência sobre defaults da biblioteca. Os arquivos vendorizados permanecem intactos.
+Planning can use `writing-plans` as a method, but keep this order and these paths. If you need the intent analysis from `brainstorming`, do it inside the research step. Do not restart a discovery that is already complete. The explicit user request and the instructions of this project have priority over the library defaults. Do not change the vendored files.
 
-## Tarefas curtas, claras e na ordem certa
+## Short, clear tasks in the right order
 
-- Preferir a menor solução que atende aos critérios; eliminar trabalho especulativo, etapas repetidas e abstrações sem uso.
-- Cada tarefa entrega um resultado revisável; configuração e documentação pertencem à tarefa cujo resultado depende delas.
-- Ordenar primeiro pelos pré-requisitos. Entre tarefas prontas, preferir as que desbloqueiam outras; depois o menor esforço. Não prometer uma otimização matemática global.
-- A tabela de tarefas tem ID estável, dependências, arquivos, dono, estimativa em minutos, aceitação e comando com resultado esperado.
-- Paralelizar somente tarefas sem dependência entre si **e com arquivos de escrita distintos**. Se dois trabalhos precisam do mesmo arquivo, sequenciar ou redefinir a fronteira; não confiar em ausência provável de conflito.
-- Rever o plano uma vez antes da execução: cobertura da spec, interfaces, tarefas dispensáveis, dependências, conflitos de arquivos, verificações e caminho mais curto. Correções posteriores devem registrar a mudança de premissa.
+- Use the smallest solution that meets the criteria. Remove speculative work, repeated steps, and unused abstractions.
+- Each task delivers a result that someone can review. Configuration and documentation belong to the task whose result depends on them.
+- Order the tasks by prerequisites first. Among ready tasks, prefer the ones that unblock other tasks, then the ones with the least effort. Do not promise a global mathematical optimum.
+- The task table has a stable ID, dependencies, files, an owner, an estimate in minutes, acceptance criteria, and a command with its expected result.
+- Run tasks in parallel only when they do not depend on each other **and write different files**. If two tasks need the same file, run them in sequence or change the task boundary. Do not rely on a conflict being unlikely.
+- Review the plan once before execution. Check spec coverage, interfaces, unnecessary tasks, dependencies, file conflicts, checks, and the shortest path. If you correct the plan later, record the changed assumption.
 
-O validador verifica DAG, campos, IDs e colisões de caminhos normalizados entre tarefas independentes. Use caminhos exatos ou diretórios; globs são recusadas. Efeitos indiretos, symlinks e alterações de arquivos não declaradas exigem revisão semântica do coordenador.
+The validator checks the DAG, the fields, the IDs, and collisions of normalized paths between independent tasks. Use exact paths or directories. The validator rejects globs. Indirect effects, symlinks, and changes to files that a task does not declare need a semantic review by the coordinator.
 
-## Codex e Claude simultâneos
+## Codex and Claude at the same time
 
-O contrato é **um agente escritor por worktree e por tarefa**. Todos compartilham Git e os artefatos versionados, mas não o diretório de trabalho. Qualquer quantidade de sessões de qualquer provedor pode participar se houver tarefas independentes e recursos suficientes.
+The rule is **one writing agent for each worktree and each task**. All agents share Git and the committed artifacts, but not the working directory. Any number of sessions from any provider can take part when there are independent tasks and enough resources.
 
-1. Um coordenador grava e integra a pesquisa/spec/plano em `develop` antes de despachar implementadores. Somente ele atualiza o plano e integra PRs; os trabalhadores não alteram esses arquivos compartilhados.
-2. Cada agente recebe mudança, tarefa, branch base e critérios. Reserve a tarefa/crie a worktree:
+1. One coordinator writes the research, spec, and plan and merges them into `develop` before dispatching implementers. Only the coordinator updates the plan and integrates PRs. Workers do not change these shared files.
+2. Each agent receives a change, a task, a base branch, and criteria. Claim the task and create the worktree:
 
    ```bash
-   python3 scripts/worktree.py start --change exemplo --task T01 --agent codex-1
-   python3 scripts/worktree.py start --change exemplo --task T02 --agent claude-1
+   python3 scripts/worktree.py start --change example --task T01 --agent codex-1
+   python3 scripts/worktree.py start --change example --task T02 --agent claude-1
    ```
 
-3. Abra Codex ou Claude no caminho impresso, em terminais/sessões próprios. O script prepara isolamento e reserva; não lança nem controla sessões. As identidades `codex-1`/`claude-1` são rótulos livres, não provedores fixos.
-4. Tarefas dependentes só iniciam depois de seus pré-requisitos integrados. Atualize/fetch a base antes de abrir a próxima worktree. Integre PRs de forma serial com recomendação QA, rode verificações no resultado combinado e só então libere dependentes. A verificação final QA usa conteúdo estável; planejamento de cenários/testes pode ocorrer em paralelo com arquivos e recursos exclusivos, conforme [qa-test](qa-test.md).
-5. Cada trabalhador grava sua entrega em `docs/sdd/<mudanca>/handoffs/<tarefa>-<agente>.md`: SHA, arquivos, testes/resultados, limitações, dúvidas e mudanças de escopo. O coordenador reaproveita isso na revisão/PR.
-6. `python3 scripts/worktree.py list` mostra reservas em armazenamento Git compartilhado, visível a todas as worktrees. Ao encerrar uma tarefa, pare sua sessão escritora, confirme que os commits foram integrados e use `finish` com os mesmos identificadores. Não usar `--force` para remover trabalho de outra sessão.
+3. Open Codex or Claude in the printed path, each in its own terminal or session. The script prepares isolation and the claim. It does not start or control sessions. The labels `codex-1` and `claude-1` are free text. They do not fix a provider.
+4. A dependent task starts only after its prerequisites are integrated. Update or fetch the base before you open the next worktree. Integrate PRs one at a time with a QA recommendation. Run the checks on the combined result before you release dependent tasks. The final QA check uses stable content. Scenario and test planning can run in parallel with exclusive files and resources, as [qa-test](qa-test.md) describes.
+5. Each worker writes a handoff in `docs/sdd/<change>/handoffs/<task>-<agent>.md`: SHA, files, tests and results, limits, questions, and scope changes. The coordinator uses this file in the review and the PR.
+6. `python3 scripts/worktree.py list` shows the claims. They are stored in shared Git storage that all worktrees can see. To finish a task, stop its writing session, make sure that its commits are integrated, and run `finish` with the same identifiers. Do not use `--force` to remove the work of another session.
 
-Reservas são publicadas completas por hard link exclusivo no diretório comum de Git, evitando dupla posse e leitura de JSON parcial. São locais à máquina/clone; para múltiplos clones ou máquinas, o coordenador usa assignees/PRs como autoridade e não trata este lock local como distribuído. Uma reserva órfã exige verificar worktree, commits e sessão antes de remover manualmente seu arquivo; nunca recuperá-la por timeout automático.
+The script publishes each claim complete through an exclusive hard link in the common Git directory. This prevents double ownership and partial JSON reads. Claims are local to the machine and the clone. For several clones or machines, the coordinator uses assignees and PRs as the authority. Do not treat this local lock as a distributed lock. Before you manually remove an orphan claim, check its worktree, its commits, and its session. Never release a claim automatically after a timeout.
 
-O Compose tem nome padrão `local-layla`: testes de container simultâneos precisam de instalações próprias, portas diferentes **e nomes de projeto Compose diferentes** (`COMPOSE_PROJECT_NAME=local-layla-t01 ./layla up`). Dados/modelos/workspace de runtime não podem ser compartilhados entre testes escritores.
+The default Compose project name is `local-layla`. Concurrent container tests need their own installations, different ports, **and different Compose project names** (`COMPOSE_PROJECT_NAME=local-layla-t01 ./layla up`). Tests that write must not share runtime data, models, or workspaces.
 
-## Skills e papéis portáveis
+## Portable skills and roles
 
-- `AGENTS.md`: contrato para Codex e outros agentes que leem esse arquivo.
-- `CLAUDE.md`: importa o mesmo contrato.
-- `.agents/skills/`: skills locais descobertas pelo Codex.
-- `.claude/skills/`: as mesmas skills descobertas pelo Claude Code.
-- `.codex/agents/tech-planner.toml` e `.claude/agents/tech-planner.md`: adaptadores do planejador compartilhado.
-- `.codex/agents/qa-test.toml` e `.claude/agents/qa-test.md`: adaptadores do QA compartilhado. Ambos os papéis herdam o modelo da sessão.
+- `AGENTS.md`: the contract for Codex and other agents that read this file.
+- `CLAUDE.md`: imports the same contract.
+- `.agents/skills/`: local skills that Codex discovers.
+- `.claude/skills/`: the same skills, for Claude Code.
+- `.codex/agents/tech-planner.toml` and `.claude/agents/tech-planner.md`: adapters for the shared planner.
+- `.codex/agents/qa-test.toml` and `.claude/agents/qa-test.md`: adapters for the shared QA role. Both roles inherit the session model.
 
-Os diretórios de descoberta usam links relativos para `skills/` e `vendor/superpowers/skills/`, preservando os recursos vizinhos. Se uma plataforma não seguir links, copie as pastas para seu diretório de skills. O contrato continua disponível por leitura direta dos arquivos.
+The discovery directories use relative links to `skills/`, `vendor/superpowers/skills/`, and `vendor/asd-ste100/`. The links keep the neighboring resources available. If a platform does not follow links, copy the folders to its skills directory. Agents can always read the contract files directly.
 
-Consulte [SUPERPOWERS.md](SUPERPOWERS.md) para roteamento e atualização da cópia local. Esta integração usa skills locais; não instala hooks ou plugins globais.
+See [SUPERPOWERS.md](SUPERPOWERS.md) for routing and for updates to the local copy. This integration uses local skills. It does not install global hooks or plugins.
 
-Exemplo de kickoff:
+## Writing style
+
+Write all files in English. Use the vendored `asd-ste100` skill:
+
+- **Strict mode** for skills, agent roles, adapters, prompts, error messages, help text, and code comments.
+- **STE-flavored mode** for human-readable documentation such as this guide. Use clear, instructional language: short sentences, active voice, and one idea for each sentence.
+
+Run `python3 scripts/check-style.py` before you commit prompt text. The check covers the Strict Markdown and TOML files and must report zero hard violations. Review `agents/openai.yaml` files manually, because the linter reads a YAML file as one sentence.
+
+Example kickoff:
 
 ```text
-Leia AGENTS.md. Use project-research para investigar <problema>.
-Depois use o papel tech-planner para propor a menor ordem de tarefas claras.
-Registre a execução Superpowers no plano, reserve worktrees e execute o trabalho
-autorizado. Codex e Claude podem assumir tarefas independentes. Use qa-test para
-verificar aceitação e registrar qa-report.md antes de recomendar integração.
+Read AGENTS.md. Use project-research to investigate <problem>.
+Then use the tech-planner role to propose the smallest order of clear tasks.
+Record the Superpowers execution in the plan, claim worktrees, and execute the
+authorized work. Codex and Claude can take independent tasks. Use qa-test to
+check acceptance and record qa-report.md before you recommend integration.
 ```
 
-Não pedir de novo autorização já expressa na sessão. Quando houver uma decisão material pendente, apresentar primeiro o plano concreto e perguntar apenas o que muda a execução. Uma instrução de pesquisa/planejamento isolado não autoriza executar produto, merges ou releases.
+Do not ask again for an authorization that the session already gave. When a material decision is open, present the concrete plan first, and ask only what changes the execution. An instruction to only research or plan does not authorize product execution, merges, or releases.

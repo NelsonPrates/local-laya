@@ -1,5 +1,5 @@
 {
-  "change": "exemplo",
+  "change": "example",
   "research": "research.md",
   "spec": "spec.md",
   "plan": "plan.md",
@@ -7,13 +7,13 @@
   "tasks": [
     {
       "id": "T01",
-      "title": "Entregar o comportamento mínimo definido na especificação",
+      "title": "Deliver the minimum behavior that the spec defines",
       "owner": "unassigned",
       "estimate_minutes": 20,
       "depends_on": [],
-      "files": ["caminho/exato/implementacao.py", "tests/test_comportamento.py"],
-      "acceptance": "Descrever o resultado observável com os valores reais da spec.",
-      "verify": "Comando real que prova a aceitação, com o resultado esperado."
+      "files": ["exact/path/implementation.py", "tests/test_behavior.py"],
+      "acceptance": "Describe the observable result with the real values from the spec.",
+      "verify": "A real command that proves the acceptance, with the expected result."
     }
   ]
 }

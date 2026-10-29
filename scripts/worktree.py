@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Reserva tarefas entre agentes de um mesmo clone e cria worktrees isoladas."""
+"""Claim tasks for agents in one clone and create isolated worktrees."""
 import argparse
 import json
 import os
@@ -16,12 +16,12 @@ def git(*args, cwd=None):
 
 def slug(value):
     if not re.fullmatch(r"[a-zA-Z0-9][a-zA-Z0-9-]{0,63}", value):
-        raise argparse.ArgumentTypeError("Use 1 a 64 letras, números ou hífens")
+        raise argparse.ArgumentTypeError("Use 1 to 64 letters, digits, or hyphens")
     return value
 
 
 def publish_claim(path, record):
-    """Publica JSON completo via hard link exclusivo; leitores nunca veem escrita parcial."""
+    """Publish the complete JSON through an exclusive hard link. Readers never see a partial write."""
     temporary = None
     try:
         with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", dir=path.parent, prefix=".pending-", suffix=".tmp", delete=False) as stream:
@@ -41,7 +41,7 @@ def read_claims(folder):
         try:
             records.append(json.loads(path.read_text(encoding="utf-8")))
         except FileNotFoundError:
-            # finish/rollback pode remover a reserva depois do glob.
+            # finish or a rollback can remove the claim after the glob.
             continue
     return records
 
@@ -59,7 +59,7 @@ def main(argv=None):
     args = parser.parse_args(argv)
     try:
         common = Path(git("rev-parse", "--path-format=absolute", "--git-common-dir"))
-        # O primeiro registro é a worktree principal; toda sessão usa a mesma raiz.
+        # The first entry is the main worktree. All sessions use the same root.
         primary = Path(git("worktree", "list", "--porcelain").splitlines()[0].removeprefix("worktree "))
         claims = common / "local-layla" / "claims"
         if args.command == "list":
@@ -72,28 +72,28 @@ def main(argv=None):
         if args.command == "start":
             plan_path = primary / "docs" / "sdd" / args.change / "plan.json"
             relative_plan = plan_path.relative_to(primary).as_posix()
-            # Somente o plano comprometido na base, nunca uma edição ainda invisível
-            # aos executores das outras worktrees.
+            # Use only the plan committed on the base. Never use an edit that the
+            # executors in other worktrees cannot see.
             plan = json.loads(git("show", f"{args.base}:{relative_plan}"))
             tasks = {task["id"]: task for task in plan["tasks"]}
             if args.task not in tasks:
-                raise ValueError("Tarefa não existe no plano versionado; planeje antes de reservar")
-            # A base deve conter o plano, para o executor não receber um plano invisível.
+                raise ValueError("The task is not in the committed plan. Plan the task before you claim it")
+            # The base must contain the plan, so that the executor gets a visible plan.
             git("cat-file", "-e", f"{args.base}:{relative_plan}")
             if tasks[args.task].get("owner") not in ("unassigned", args.agent):
-                raise ValueError("O plano atribui a tarefa a outro dono; o coordenador precisa atualizar a atribuição")
+                raise ValueError("The plan assigns the task to a different owner. The coordinator must update the assignment")
             if not git("check-ignore", ".worktrees/probe", cwd=primary):
-                raise ValueError(".worktrees/ precisa estar no .gitignore")
+                raise ValueError(".worktrees/ must be in .gitignore")
             path = primary / ".worktrees" / args.change / f"{args.task}-{args.agent}"
             branch = f"feature/{args.change}/{args.task}-{args.agent}"
             if path.exists():
-                raise ValueError(f"Worktree já existe: {path}")
+                raise ValueError(f"The worktree exists: {path}")
             claims.mkdir(parents=True, exist_ok=True)
             record = {"change":args.change,"task":args.task,"agent":args.agent,"branch":branch,"worktree":str(path),"base":args.base}
             try:
                 publish_claim(claim, record)
             except FileExistsError as error:
-                raise ValueError("Tarefa já reservada. Consulte list; não remova a reserva de outra sessão.") from error
+                raise ValueError("The task has a claim. Run list. Do not remove the claim of a different session.") from error
             try:
                 path.parent.mkdir(parents=True, exist_ok=True)
                 git("worktree", "add", "-b", branch, str(path), args.base, cwd=primary)
@@ -104,18 +104,18 @@ def main(argv=None):
             return 0
         record = json.loads(claim.read_text(encoding="utf-8"))
         if record["agent"] != args.agent:
-            raise ValueError("Somente o dono pode encerrar esta reserva")
+            raise ValueError("Only the owner can finish this claim")
         path = Path(record["worktree"])
         if git("status", "--porcelain", cwd=path):
-            raise ValueError("A worktree tem alterações; preserve/integre antes de encerrar")
+            raise ValueError("The worktree has changes. Keep or integrate them before you finish")
         git("merge-base", "--is-ancestor", git("rev-parse", "HEAD", cwd=path), args.base)
         git("worktree", "remove", str(path), cwd=primary)
         claim.unlink()
-        print(f"Reserva encerrada. Branch preservada: {record['branch']}")
+        print(f"Claim finished. Branch kept: {record['branch']}")
         return 0
     except (OSError, ValueError, KeyError, subprocess.CalledProcessError) as error:
         detail = error.stderr.strip() if isinstance(error, subprocess.CalledProcessError) else str(error)
-        print(f"Falha: {detail}", file=sys.stderr)
+        print(f"Failed: {detail}", file=sys.stderr)
         return 1
 
 

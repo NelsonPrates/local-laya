@@ -1,35 +1,35 @@
-# Revisão do bootstrap
+# Bootstrap review
 
-Data: 2026-10-11. Escopo: skills Docker/API/pesquisa, workflow SDD, worktrees paralelas, Superpowers vendorizado e Gitflow.
+Date: 2026-10-11. Scope: Docker, API, and research skills, the SDD workflow, parallel worktrees, vendored Superpowers, and Gitflow.
 
-## Resultado
+## Result
 
-Revisão independente somente leitura concluída, seguida de correções e re-revisão. Nenhum achado remanescente no escopo revisto. A validação é de scripts, workflow e inicialização; inferência real continua sem teste por ausência de GGUF fornecido.
+An independent read-only review was completed, followed by fixes and a second review. No findings remain in the reviewed scope. The checks cover scripts, the workflow, and startup. Real inference is still untested, because no GGUF model was supplied.
 
-## Achados corrigidos
+## Fixed findings
 
-1. P2: comparação literal de caminhos permitia conflitos como `src/./client.py` e `src/client.py`, ou raiz `.` versus um arquivo. O validador agora normaliza caminhos, considera a raiz e recusa globs. Testes cobrem aliases, raiz, diretórios e tarefas sequenciais.
-2. P3: uma listagem simultânea podia ler JSON de reserva ainda incompleto. A reserva agora é escrita em arquivo temporário e publicada completa por hard link exclusivo; a listagem tolera remoção depois do glob. Testes determinísticos cobrem escrita parcial, remoção concorrente e disputa por dupla posse.
+1. P2: literal path comparison allowed conflicts such as `src/./client.py` and `src/client.py`, or the root `.` against a file. The validator now normalizes paths, handles the root, and rejects globs. Tests cover aliases, the root, directories, and sequential tasks.
+2. P3: a concurrent listing could read claim JSON that was not yet complete. The claim is now written to a temporary file and published complete through an exclusive hard link. The listing tolerates a removal after the glob. Deterministic tests cover a partial write, a concurrent removal, and a race for double ownership.
 
-A re-revisão confirmou ambas as correções e não encontrou regressões relacionadas.
+The second review confirmed both fixes and found no related regressions.
 
-## Verificação
+## Checks
 
-- 24 testes passaram: geração, preservação de arquivos/configuração/symlink, cópias independentes das skills, cliente HTTP, URLs locais, erros, DAG, colisões, reservas paralelas, cleanup seguro e metadados de release.
-- As três skills próprias passaram no validador `quick_validate.py` de skill-creator, além do verificador do projeto.
-- Superpowers: 76 arquivos de origem com hashes e 9 arquivos executáveis conferidos contra o lock; 15 skills disponíveis por links locais para Codex/Claude.
-- Bash e YAML válidos; Compose gerado validado.
-- Imagem CPU compilada e container iniciado em `127.0.0.1:18765`. `/health` retornou 200, banco disponível, 207 ferramentas registradas e `model_loaded=false`; `/ui` e `/openapi.json` responderam 200, com 351 rotas no schema.
-- `ready` retornou 1 pela ausência do GGUF, conforme esperado. Nenhuma resposta de inferência real é reivindicada.
-- Neste host, `no-new-privileges` impediu a execução de processos no Docker. Um teste controlado isolou essa opção como causa; ela foi removida do template. O usuário não recebeu alterações de daemon/host.
-- O container de teste foi parado/removido; dados locais foram preservados e a porta do runtime foi restaurada para 8000. Dados/modelos/runtime são ignorados pelo Git.
+- 24 tests passed. They cover generation and the preservation of files, configuration, and symlinks. They also cover independent skill copies, the HTTP client, local URLs, and errors. The rest cover the DAG, collisions, parallel claims, safe cleanup, and release metadata.
+- The three project skills passed the `quick_validate.py` validator of skill-creator and the project checker.
+- Superpowers: 76 source files with hashes and 9 executable files matched the lock. 15 skills are available to Codex and Claude through local links.
+- Bash and YAML are valid. The generated Compose file is valid.
+- The CPU image was built, and the container started on `127.0.0.1:18765`. `/health` returned 200, with the database available, 207 registered tools, and `model_loaded=false`. `/ui` and `/openapi.json` returned 200, with 351 routes in the schema.
+- `ready` returned 1 because no GGUF model was present, as expected. No real inference response is claimed.
+- On this host, `no-new-privileges` prevented process execution in Docker. A controlled test isolated this option as the cause, and the option was removed from the template. The user's daemon and host were not changed.
+- The test container was stopped and removed. Local data was kept, and the runtime port was set back to 8000. Git ignores data, models, and runtime files.
 
-## Revisão da ordem e autorização
+## Order and authorization review
 
-Pesquisa → tech-planner → skill de execução Superpowers → revisão/verificação → Gitflow. A biblioteca não altera essa ordem nem repete autorizações já expressas. Tarefas independentes só são paralelas com arquivos distintos; integração e atualização de plano ficam com um coordenador. As reservas são locais ao clone e não substituem coordenação entre máquinas.
+Research → tech-planner → Superpowers execution skill → review and checks → Gitflow. The library does not change this order and does not repeat authorizations that the user already gave. Independent tasks run in parallel only with different files. One coordinator integrates work and updates the plan. Claims are local to the clone and do not replace coordination between machines.
 
-A publicação inicial do repositório foi autorizada pelo usuário. Tags/releases futuras têm o fluxo documentado e não são publicadas como efeito do bootstrap. Branch protections estão descritas como recomendação, sem alegação de aplicação automática.
+The user authorized the first publication of the repository. Future tags and releases follow the documented flow and are not published as a side effect of the bootstrap. Branch protections are described as a recommendation, with no claim that they are applied automatically.
 
-## Publicação
+## Publication
 
-Repositório público criado em [NelsonPrates/local-layla](https://github.com/NelsonPrates/local-layla), com `main` e `develop`. A [CI do bootstrap em main](https://github.com/NelsonPrates/local-layla/actions/runs/38179536407) passou, incluindo os 24 testes e a validação do Compose no runner GitHub. Nenhuma tag ou GitHub Release foi criada.
+Public repository created at [NelsonPrates/local-layla](https://github.com/NelsonPrates/local-layla), with `main` and `develop`. The [bootstrap CI on main](https://github.com/NelsonPrates/local-layla/actions/runs/38179536407) passed, including the 24 tests and the Compose check on the GitHub runner. No tag or GitHub Release was created.

@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     git ca-certificates build-essential cmake libgomp1 \
     && rm -rf /var/lib/apt/lists/*
 
-# Não executar instaladores remotos; obter e verificar a revisão selecionada.
+# Do not run remote installers. Get the selected revision and check it.
 RUN test -n "$LAYLA_REV" \
     && git init /opt/layla \
     && cd /opt/layla \
@@ -20,7 +20,7 @@ RUN test -n "$LAYLA_REV" \
     && test "$(git rev-parse HEAD)" = "$LAYLA_REV" \
     && rm -rf .git
 
-# O índice CPU evita baixar bibliotecas CUDA numa instalação sem GPU.
+# The CPU index prevents CUDA library downloads in an installation without a GPU.
 RUN pip install --no-cache-dir torch torchvision --index-url https://download.pytorch.org/whl/cpu \
     && pip install --no-cache-dir '/opt/layla[cpu,llm]'
 

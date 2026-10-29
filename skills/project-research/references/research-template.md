@@ -1,30 +1,30 @@
-# Pesquisa: <mudança>
+# Research: <change>
 
-Data: <UTC ou data local explícita>
-Pedido e critério de sucesso: <o que o usuário quer resolver>
+Date: <UTC or explicit local date>
+Request and success criterion: <what the user wants to solve>
 
-## Estado atual e pergunta técnica
+## Current state and technical question
 
-<Arquivos/revisões envolvidos e a decisão que falta.>
+<Related files and revisions, and the missing decision.>
 
-## Evidências
+## Evidence
 
-| Fonte primária/arquivo | Revisão ou data | Achado verificado | Implicação |
+| Primary source or file | Revision or date | Checked finding | Implication |
 | --- | --- | --- | --- |
-| <URL ou caminho> | <SHA/versão> | <fato> | <efeito na solução> |
+| <URL or path> | <SHA/version> | <fact> | <effect on the solution> |
 
-## Alternativas e recomendação
+## Alternatives and recommendation
 
-<Opções plausíveis e por que a menor opção suficiente atende aos critérios.>
+<Plausible options, and why the smallest sufficient option meets the criteria.>
 
-## Experimentos
+## Experiments
 
-<Comando, resultado observado e limite da evidência; ou não necessário.>
+<Command, observed result, and limit of the evidence. Or: not necessary.>
 
-## Dúvidas que mudam o plano
+## Questions that change the plan
 
-<Somente questões materiais pendentes, ou nenhuma.>
+<Only open material questions, or none.>
 
-## Handoff ao tech-planner
+## Handoff to the tech-planner
 
-<Critérios, restrições, premissas e recomendação. Ainda sem implementação.>
+<Criteria, constraints, assumptions, and recommendation. No implementation yet.>

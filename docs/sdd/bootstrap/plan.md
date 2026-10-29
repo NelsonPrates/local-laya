@@ -1,15 +1,15 @@
-# Bootstrap: plano técnico
+# Bootstrap: technical plan
 
-Objetivo: entregar as skills e o workflow compartilhado com a menor quantidade de mecanismos que permita usar, verificar e manter o projeto.
+Goal: deliver the skills and the shared workflow with the fewest mechanisms that let us use, check, and maintain the project.
 
-Pesquisa: [research.md](research.md). Especificação: [spec.md](spec.md). Execução: `executing-plans`, nativa nesta sessão; o usuário já autorizou implementação e publicação do repositório. Este plano consolida o bootstrap em andamento; não afirma que a parte Layla aguardou o pedido posterior de SDD.
+Research: [research.md](research.md). Spec: [spec.md](spec.md). Execution: `executing-plans`, native in this session. The user already authorized the implementation and the publication of the repository. This plan consolidates the bootstrap that was in progress. It does not claim that the Layla part waited for the later SDD request.
 
-1. T01 — finalizar geração e cliente Layla, validar preservação/HTTP e inicialização Docker. Arquivos sob `skills/layla-*` e `tests/test_layla.py`. Aceitação: geração independente, localhost correto, erros úteis e boot verificado. Não há modelo para teste de inferência.
-2. T02 — entregar pesquisa/planejador, protocolo paralelo e biblioteca Superpowers. Arquivos `skills/project-research`, `vendor`, `docs/workflow`, adaptadores, verificadores e testes próprios. Independente de T01 em arquivos de código; execução nativa sequencial evita custo de coordenação desnecessário neste bootstrap.
-3. T03 — integrar CI/release, documentação e revisão; executar o conjunto combinado e publicar main/develop na conta pessoal. Depende de T01/T02. Aceitação: checks verdes, estado remoto confirmado, nenhuma tag de versão publicada.
+1. T01 — finish generation and the Layla client. Check preservation and HTTP behavior, and check Docker startup. Files under `skills/layla-*` and `tests/test_layla.py`. Acceptance: independent generation, correct localhost handling, useful errors, and a checked boot. No model is available for an inference test.
+2. T02 — deliver the research skill and planner, the parallel protocol, and the Superpowers library. Files: `skills/project-research`, `vendor`, `docs/workflow`, adapters, checkers, and their tests. T02 does not share code files with T01. Native sequential execution avoids unnecessary coordination cost in this bootstrap.
+3. T03 — integrate CI and release, documentation, and review. Run the combined suite and publish main/develop on the personal account. Depends on T01 and T02. Acceptance: green checks, confirmed remote state, and no published version tag.
 
-Verificação comum: `python3 -m unittest discover -s tests -v`, `python3 scripts/check-skills.py`, `python3 scripts/check-vendor.py`, `python3 scripts/check-plan.py docs/sdd/bootstrap/plan.json` e Compose válido. T01 acrescenta boot real; T02 acrescenta reservas concorrentes em clone temporário. Revisão: cobertura da spec, não sobrescrita, URLs locais, locks por clone, revisão vendorizada e tag pertencente a main.
+Common checks: `python3 -m unittest discover -s tests -v`, `python3 scripts/check-skills.py`, `python3 scripts/check-vendor.py`, `python3 scripts/check-plan.py docs/sdd/bootstrap/plan.json`, and a valid Compose file. T01 adds a real boot. T02 adds concurrent claims in a temporary clone. Review: spec coverage, no overwrites, local URLs, locks for each clone, the vendored revision, and tags that belong to main.
 
-- [x] T01 concluída e verificada
-- [x] T02 concluída e verificada
-- [x] T03 integrada, revisada e publicada
+- [x] T01 complete and checked
+- [x] T02 complete and checked
+- [x] T03 integrated, reviewed, and published

@@ -1,16 +1,16 @@
 ---
 name: project-research
-description: Pesquisar e registrar evidências antes do planejamento de desenvolvimento ou manutenção de local-layla, incluindo upstream Layla, Docker, APIs, dependências e workflows de agentes. Use como primeira etapa SDD, antes de propor implementação.
+description: Research and record evidence before you plan local-layla development or maintenance, including upstream Layla, Docker, APIs, dependencies, and agent workflows. Use it as the first SDD step, before you propose an implementation.
 ---
 
-# Pesquisa para desenvolvimento e manutenção
+# Research for development and maintenance
 
-Produza um `research.md` que permita ao planejador decidir sem repetir descobertas. Use `references/research-template.md` como formato mínimo e copie/adapte seu conteúdo para `docs/sdd/<mudanca>/research.md` na raiz do projeto.
+Write a `research.md` that lets the planner decide without new discovery work. Use `references/research-template.md` as the minimum format. Copy and adapt it to `docs/sdd/<change>/research.md` in the project root.
 
-1. Releia o pedido e a autorização da sessão. Identifique a decisão técnica a resolver e os critérios do usuário; reduza a pesquisa a isso.
-2. Confira `AGENTS.md`, os arquivos envolvidos, testes existentes, revisões travadas e resultados reproduzíveis. Procure com `rg`; quando não existir clone/upstream, consulte fontes oficiais. Não exponha configurações privadas nem tokens no relatório público.
-3. Verifique APIs e comportamentos dependentes de versão em código upstream/documentação primária. Registre URL, revisão/versão, data de consulta, evidência e implicação; diferencie fato, hipótese e escolha técnica. Execute apenas experimentos pequenos, reversíveis e dentro do escopo autorizado.
-4. Compare somente alternativas plausíveis pelos critérios relevantes: simplicidade, compatibilidade com o repo, manutenção, recursos e licença. Recomende a menor opção suficiente, explicando o custo concreto.
-5. Registre lacunas que alteram o plano e proponha como resolvê-las. Pare quando houver evidência suficiente para os critérios de aceitação; não prolongue a pesquisa para catalogar tudo.
+1. Read the request and the session authorization again. Identify the technical decision and the user's criteria. Limit the research to them.
+2. Read `AGENTS.md`, the related files, the existing tests, the locked revisions, and the reproducible results. Search with `rg`. If no clone or upstream copy exists, read the official sources. Do not put private configuration or tokens in the public report.
+3. Check version-dependent APIs and behavior in upstream code or primary documentation. Record the URL, revision or version, date of access, evidence, and implication. Keep facts, hypotheses, and technical choices separate. Run only small, reversible experiments inside the authorized scope.
+4. Compare only plausible alternatives. Use the relevant criteria: simplicity, compatibility with the repository, maintenance, resources, and license. Recommend the smallest sufficient option and give its concrete cost.
+5. Record the gaps that change the plan. Propose how to close each gap. Stop when the evidence is sufficient for the acceptance criteria. Do not continue the research to catalog everything.
 
-A pesquisa não implementa produto nem faz merges, releases ou downloads grandes de modelos. Sua entrega é evidência e uma recomendação, não um plano já aprovado. Encaminhe ao papel `docs/workflow/tech-planner.md` quando estiver disponível. Se a skill foi copiada para outro local, encontre esse papel na raiz do projeto alvo, sem depender de `../../..` do local da skill.
+Research does not implement the product. It does not merge, release, or download large models. Its output is evidence and a recommendation, not an approved plan. Send the output to the `docs/workflow/tech-planner.md` role when it is available. If this skill is in a different location, find that role in the target project root. Do not depend on a `../../..` path from the skill location.

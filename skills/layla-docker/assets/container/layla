@@ -5,19 +5,19 @@ cd "$ROOT"
 compose() { docker compose --env-file "$ROOT/.env" -f "$ROOT/compose.yaml" "$@"; }
 usage() {
   cat <<'HELP'
-Uso: ./layla <comando>
-  build          Compila a imagem CPU (primeira vez: vários minutos)
-  up             Compila se necessário e inicia, aguardando a API
-  down           Para e remove o container; mantém dados/modelos/workspace
-  restart        Reinicia para aplicar mudanças em runtime_config.json
-  status         Mostra o estado do container
-  logs           Acompanha os últimos 100 registros (Ctrl+C para sair)
-  config         Valida e mostra o Compose resolvido
-  health         Consulta /health; HTTP 200 não garante modelo carregado
-  ready          Falha enquanto model_loaded não for true
-  doctor         Diagnóstico do Docker, container e prontidão do modelo
-  approve ID     Aprova uma ação específica dentro do container
-  help           Mostra esta ajuda
+Usage: ./layla <command>
+  build          Build the CPU image (first time: several minutes)
+  up             Build if necessary, start, and wait for the API
+  down           Stop and remove the container. Keep data, models, and workspace
+  restart        Restart to apply changes in runtime_config.json
+  status         Show the container state
+  logs           Follow the last 100 log lines (Ctrl+C to exit)
+  config         Check and show the resolved Compose file
+  health         Read /health. HTTP 200 does not prove a loaded model
+  ready          Fail while model_loaded is not true
+  doctor         Diagnose Docker, the container, and model readiness
+  approve ID     Approve one specific action inside the container
+  help           Show this help
 HELP
 }
 health() {
@@ -27,13 +27,13 @@ command=${1:-help}
 case "$command" in
   help|-h|--help) usage; exit 0;;
 esac
-if [[ ! -f .env ]]; then echo 'Configuração ausente: execute setup.py primeiro.' >&2; exit 1; fi
+if [[ ! -f .env ]]; then echo 'Missing configuration. Run setup.py first.' >&2; exit 1; fi
 if ! command -v docker >/dev/null || ! docker compose version >/dev/null 2>&1; then
-  echo 'Instale Docker Engine/Desktop com o plugin Docker Compose v2.' >&2; exit 1
+  echo 'Install Docker Engine or Docker Desktop with the Docker Compose v2 plugin.' >&2; exit 1
 fi
 case "$command" in
   build) compose build;;
-  up) compose up -d --build --wait --wait-timeout 600; echo 'API iniciada. Use ./layla ready para verificar o modelo.';;
+  up) compose up -d --build --wait --wait-timeout 600; echo 'The API started. Run ./layla ready to check the model.';;
   down) compose down;;
   restart) compose restart layla;;
   status) compose ps;;
@@ -43,7 +43,7 @@ case "$command" in
   ready) health ready;;
   doctor) docker version; docker compose version; compose ps; health ready;;
   approve)
-    if [[ $# != 2 || ! "$2" =~ ^[a-zA-Z0-9-]+$ ]]; then echo 'Uso: ./layla approve ID' >&2; exit 2; fi
+    if [[ $# != 2 || ! "$2" =~ ^[a-zA-Z0-9-]+$ ]]; then echo 'Usage: ./layla approve ID' >&2; exit 2; fi
     compose exec -T layla python -c 'import json,sys,urllib.request; p=json.dumps({"id":sys.argv[1]}).encode(); r=urllib.request.Request("http://127.0.0.1:8000/approve",data=p,headers={"Content-Type":"application/json"}); d=json.load(urllib.request.urlopen(r,timeout=120)); print(json.dumps(d,ensure_ascii=False,indent=2)); sys.exit(0 if d.get("ok") is True else 1)' "$2"
     ;;
   *) usage >&2; exit 2;;

@@ -1,26 +1,26 @@
 ---
 name: layla-docker
-description: Criar scripts e orientar a instalação, configuração e operação local do PapaKoftes/Layla em Docker Compose, com modelo GGUF e dados persistentes. Use para preparar ou diagnosticar o container; para conversar com uma instância pronta, use layla-local.
+description: Create scripts for PapaKoftes/Layla in Docker Compose and guide its local installation, configuration, and operation with a GGUF model and persistent data. Use it to prepare or diagnose the container. To talk to a running instance, use layla-local.
 ---
 
-# Layla em Docker
+# Layla in Docker
 
-Use o gerador incluído para produzir uma instalação independente e explicar seus comandos ao usuário. O projeto alvo é [PapaKoftes/Layla](https://github.com/PapaKoftes/Layla); não confundir com Layla-Server, o app móvel ou Ollama.
+Use the included generator to make an independent installation. Explain its commands to the user. The target project is [PapaKoftes/Layla](https://github.com/PapaKoftes/Layla). Do not confuse it with Layla-Server, the mobile app, or Ollama.
 
-1. Verifique Python 3.10+, Docker Engine/Desktop em execução e Compose v2 (`docker info`, `docker compose version`). Se faltarem, consulte as instruções oficiais para o sistema do usuário; não instale pacotes de outro sistema.
-2. Escolha um diretório de instalação. Use um GGUF já fornecido pelo usuário ou prepare somente a interface para seleção/download posterior. Não invente URLs de modelos nem baixe vários GB sem que isso faça parte do pedido.
-3. Execute, a partir desta pasta de skill:
+1. Check for Python 3.10+, a running Docker Engine or Docker Desktop, and Compose v2 (`docker info`, `docker compose version`). If one is missing, read the official instructions for the user's system. Do not install packages for a different system.
+2. Select an installation directory. Use a GGUF model that the user supplies. Alternatively, prepare only the interface so that the user can select or download a model later. Do not invent model URLs. Do not download many GB unless the request includes it.
+3. Run this command from this skill folder:
 
    ```bash
-   python3 scripts/setup.py --output ~/local-layla-runtime --model /caminho/modelo.gguf
+   python3 scripts/setup.py --output ~/local-layla-runtime --model /path/to/model.gguf
    ```
 
-   `--model` é opcional. `--port 8001` resolve uma porta ocupada. O gerador copia o GGUF e preserva instalações existentes recusando sobrescrita; não apagar dados para contornar essa recusa.
-4. No diretório gerado, execute `./layla config` e, se a instalação foi solicitada, `./layla up`. A primeira compilação CPU pode levar vários minutos e baixar dependências grandes. Explique o progresso e os erros observados.
-5. Consulte `./layla health`, abra `http://127.0.0.1:PORTA/ui` e use `./layla ready`. Só declare a inferência pronta quando `model_loaded` for verdadeiro e uma mensagem simples tiver resposta do modelo. API acessível e container healthy não comprovam inferência.
+   `--model` is optional. Use `--port 8001` if port 8000 is busy. The generator copies the GGUF file. It refuses to overwrite an existing installation. Do not delete data to avoid this refusal.
+4. In the generated directory, run `./layla config`. If the user asked for the installation, run `./layla up`. The first CPU build can take several minutes and download large dependencies. Tell the user about the progress and the errors that you see.
+5. Run `./layla health`, open `http://127.0.0.1:PORT/ui`, and run `./layla ready`. Report inference as ready only when `model_loaded` is true and the model answers a simple message. An API that responds and a healthy container do not prove inference.
 
-Leia [references/operations.md](references/operations.md) para modelo, limites, atualização, backup e problemas de Docker. Os arquivos em `assets/container/` são templates editáveis; adapte-os quando o usuário pedir scripts diferentes, mantendo a coerência entre volumes e caminhos.
+Read [references/operations.md](references/operations.md) for the model, limits, updates, backup, and Docker problems. The files in `assets/container/` are editable templates. Adapt them when the user asks for different scripts. Keep the volumes and paths consistent.
 
-Os defaults são CPU, `n_gpu_layers=0`, porta publicada somente em `127.0.0.1`, dados em `/data`, modelos em `/data/models` e workspace em `/workspace`. Não montar a pasta pessoal inteira nem o socket Docker. Não apresentar essa imagem CPU como aceleração CUDA; GPU exige outra imagem e validação específica.
+The defaults are CPU only, `n_gpu_layers=0`, a port published only on `127.0.0.1`, data in `/data`, models in `/data/models`, and the workspace in `/workspace`. Do not mount the full home folder or the Docker socket. Do not describe this CPU image as CUDA acceleration. A GPU needs a different image and its own tests.
 
-Mantenha o SHA do upstream explícito e verificado. Não usar `latest` como se fosse uma revisão estável. Uma nova revisão exige conferir Docker, schemas e prontidão. As dependências Python e a imagem base ainda são resolvidas durante o build; o SHA sozinho não torna o build byte a byte reproduzível.
+Keep the upstream SHA explicit and checked. Do not use `latest` as a stable revision. A new revision needs new checks of Docker, schemas, and readiness. The build still resolves the Python dependencies and the base image. The SHA alone does not make the build reproducible byte for byte.

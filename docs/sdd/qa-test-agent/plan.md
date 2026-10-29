@@ -1,25 +1,25 @@
-# Plano: agente QA/testes
+# Plan: QA/testing agent
 
-Objetivo: um agente comum, uma skill autocontida e integração ao fluxo existente. Execução: `executing-plans`; adaptar seus helpers ao formato de plano já usado pelo repo, mantendo evidência e revisão independente. Um coordenador escritor basta: as duas tarefas são dependentes, sem grupo paralelo de implementação.
+Goal: one shared agent, one self-contained skill, and integration into the existing workflow. Execution: `executing-plans`. Adapt its helpers to the plan format that the repository already uses, and keep the evidence and the independent review. One writing coordinator is enough: the two tasks depend on each other, so there is no parallel implementation group.
 
-- [x] T01 — Contrato QA, skill, adaptadores e workflow. Dono: coordinator. Arquivos: `skills/project-qa/`, `docs/workflow/`, `AGENTS.md`, `CLAUDE.md`, `.codex/agents/qa-test.toml`, `.claude/agents/qa-test.md`, `README.md`, `CHANGELOG.md`. Resultado: A1/A2/A3/A5 definidos sem duplicar etapas Superpowers. Verificar com quick_validate da skill, leitura dos adaptadores e avaliação independente do comportamento.
-- [x] T02 — Instalação, descoberta e evidência. Depende de T01. Dono: coordinator. Arquivos: instalador/check-skills, links `.agents/skills/project-qa` e `.claude/skills/project-qa`, testes de instalação/descoberta e artefatos desta mudança. Resultado: A4 demonstrado e A1–A5 revisados. Primeiro estender teste de instalação e observar falha pela ausência da quarta skill; depois incluir a skill no instalador. Rodar unittest/check-skills/check-vendor/check-plan e sintaxe Bash; registrar QA/revisão e abrir PR para develop.
+- [x] T01 — QA contract, skill, adapters, and workflow. Owner: coordinator. Files: `skills/project-qa/`, `docs/workflow/`, `AGENTS.md`, `CLAUDE.md`, `.codex/agents/qa-test.toml`, `.claude/agents/qa-test.md`, `README.md`, `CHANGELOG.md`. Result: A1/A2/A3/A5 defined without duplicating Superpowers steps. Check with the skill's quick_validate, a read of the adapters, and an independent evaluation of the behavior.
+- [x] T02 — Installation, discovery, and evidence. Depends on T01. Owner: coordinator. Files: the installer and check-skills, the links `.agents/skills/project-qa` and `.claude/skills/project-qa`, installation and discovery tests, and the artifacts of this change. Result: A4 shown and A1–A5 reviewed. First, extend the installation test and watch it fail because the fourth skill is missing. Then add the skill to the installer. Run unittest, check-skills, check-vendor, check-plan, and the Bash syntax check. Record QA and review, and open a PR to develop.
 
-## Matriz QA
+## QA matrix
 
-| Critério | Verificação mínima | Esperado |
+| Criterion | Minimum check | Expected |
 | --- | --- | --- |
-| A1/A2/A3 | Revisão de contratos, fontes e adaptadores | Ordem e responsabilidades coerentes; mesmas instruções nos provedores |
-| A4 | Instalação temporária, preservação, links; suíte unittest | Quarta skill utilizável fora do repo, referências locais presentes, sem sobrescrita |
-| A5 | Forward-test independente com artefatos isolados | Relatório fundamentado sem falso positivo ou correção não atribuída |
-| Regressão | Checks de skills/vendor/plan e Bash; suíte inteira | Exit 0; vendor intacto |
+| A1/A2/A3 | Review of contracts, sources, and adapters | Coherent order and responsibilities. Same instructions for each provider |
+| A4 | Temporary installation, preservation, links, and the unittest suite | The fourth skill works outside the repository, local references are present, nothing is overwritten |
+| A5 | Independent forward test with isolated artifacts | A report with reasons, without false positives or unassigned fixes |
+| Regression | Skills, vendor, and plan checks, and Bash. The full suite | Exit 0. Vendor copy intact |
 
-Container real, GGUF e browser: fora do escopo, sem mudança de runtime/UI. Compose continua validado pelo CI existente. QA final escreve `qa-report.md`; o coordenador mantém este plano. Evidências referem-se ao commit testado e são reavaliadas se código/testes/configuração mudarem.
+Real container, GGUF, and browser: out of scope, because the runtime and UI do not change. The existing CI still checks Compose. The final QA writes `qa-report.md`. The coordinator maintains this plan. Evidence applies to the tested commit and needs a new evaluation if code, tests, or configuration change.
 
-Pre-flight: T02 consome o diretório autocontido project-qa de T01; instalação e links usam o mesmo nome. Não há conflito de interface. Ordem mínima revisada: nenhuma migração de framework, automação de gate ou teste de redação é necessária.
+Pre-flight: T02 uses the self-contained project-qa directory from T01. The installation and the links use the same name. There is no interface conflict. Minimum order reviewed: no framework migration, automated gate, or wording test is necessary.
 
-Review Focus: relato de teste obrigatório indisponível; evidência em commit anterior; escrita concorrente dos artefatos QA; portabilidade sem checkout/vendored presente.
+Review focus: the report of a required test that is not available, and evidence on an earlier commit. Also review concurrent writes to the QA artifacts, and portability without a checkout or vendored copy.
 
-## Entrega
+## Delivery
 
-T01/T02 concluídas: implementação em da5272d e 550a6b4; 25 testes passaram. [Relatório QA](qa-report.md) e [forward-test independente](forward-test.md) registram evidências e revisão sem bloqueadores. Abertura do PR/CI são a entrega de integração, sem tag/release.
+T01/T02 complete: implementation in da5272d and 550a6b4. 25 tests passed. The [QA report](qa-report.md) and the [independent forward test](forward-test.md) record evidence and a review without blockers. The PR and CI are the integration delivery, without a tag or release.

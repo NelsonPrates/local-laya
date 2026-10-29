@@ -28,9 +28,9 @@ class SetupTests(unittest.TestCase):
     def test_generate_independent_runtime_with_model(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            model = root / "modelo com espaço.gguf"
+            model = root / "café model with space.gguf"
             model.write_bytes(b"GGUFtest-fixture")
-            output = root / "instalacao independente"
+            output = root / "independent installation"
             result = run(SETUP, "--output", output, "--model", model, "--port", "8123")
             self.assertEqual(result.returncode, 0, result.stderr)
             config = json.loads((output / "data/runtime_config.json").read_text())
@@ -154,10 +154,10 @@ class ClientTests(unittest.TestCase):
             return client.main(["--base-url", self.url, *args])
 
     def test_ask_preserves_unicode_and_disables_execution(self):
-        text = 'Olá\n"aspas" e $(sem executar)'
-        self.server.reply = {"response": "Resposta do teste", "conversation_id": "c-42"}
+        text = 'Café\n"quotes" and $(no execution)'
+        self.server.reply = {"response": "Test response", "conversation_id": "c-42"}
         with patch.dict(os.environ, {"http_proxy": "http://127.0.0.1:1", "HTTP_PROXY": "http://127.0.0.1:1"}):
-            self.assertEqual(self.invoke("ask", text, "--context", "contexto", "--conversation-id", "c-42"), 0)
+            self.assertEqual(self.invoke("ask", text, "--context", "context", "--conversation-id", "c-42"), 0)
         payload = self.server.payload
         self.assertEqual(payload["message"], text)
         self.assertEqual(payload["conversation_id"], "c-42")
@@ -193,9 +193,9 @@ class ClientTests(unittest.TestCase):
         self.assertEqual(self.server.paths, ["/redirect"])
 
     def test_stdin_message(self):
-        with patch("sys.stdin", io.StringIO("texto\nmultilinha")):
+        with patch("sys.stdin", io.StringIO("multiline\ntext")):
             self.assertEqual(self.invoke("ask", "-"), 0)
-        self.assertEqual(self.server.payload["message"], "texto\nmultilinha")
+        self.assertEqual(self.server.payload["message"], "multiline\ntext")
 
 
 if __name__ == "__main__":

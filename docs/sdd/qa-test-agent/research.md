@@ -1,32 +1,32 @@
-# Pesquisa: agente de QA/testes
+# Research: QA/testing agent
 
-Data: 2026-10-11. Pedido: adicionar QA ao workflow compartilhado e escolher as melhores skills de inspiração. O repo usa Python stdlib/unittest, scripts Bash, templates Compose e documentação/skills; não mantém uma aplicação frontend própria. Há 24 testes e 15 skills Superpowers já vendorizadas. A mudança não altera Layla, container ou API.
+Date: 2026-10-11. Request: add QA to the shared workflow and select the best skills to use as models. The repository uses Python stdlib and unittest, Bash scripts, Compose templates, and documentation and skills. It has no frontend application of its own. It has 24 tests and 15 vendored Superpowers skills. The change does not affect Layla, the container, or the API.
 
-## Evidências e seleção
+## Evidence and selection
 
-Consultados o catálogo [skills.sh](https://skills.sh/), `npx --yes skills find testing-strategy` e os arquivos primários das candidatas. Popularidade ajuda a descobrir opções; adequação ao repo determina a seleção.
+Sources read: the [skills.sh](https://skills.sh/) catalog, `npx --yes skills find testing-strategy`, and the primary files of the candidates. Popularity helps to find options. Fit with the repository decides the selection.
 
-| Candidata | Evidência e adequação | Decisão |
+| Candidate | Evidence and fit | Decision |
 | --- | --- | --- |
-| [Anthropic testing-strategy](https://github.com/anthropics/knowledge-work-plugins/blob/02ffa99ff00ce4d3046ccebabb8357cb39f3ab06/engineering/skills/testing-strategy/SKILL.md) | Estratégia por componente/risco, equilíbrio entre cobertura, velocidade e manutenção; sem exigir framework. Repo Apache-2.0. | Base da escolha da menor matriz suficiente. |
-| [Superpowers verification-before-completion](https://github.com/obra/superpowers/blob/bb92a77741419a4ab5f06e711a283343f1ada0c3/skills/verification-before-completion/SKILL.md) | Exige evidência atual antes de alegar sucesso; já disponível localmente, MIT. | Base do relatório e decisão de QA. |
-| [Superpowers test-driven-development](https://github.com/obra/superpowers/blob/bb92a77741419a4ab5f06e711a283343f1ada0c3/skills/test-driven-development/SKILL.md), recurso writing-good-tests | Testar comportamento e detectar regressão real; descarta testes que apenas espelham código/prosa. | Base da qualidade dos testes novos; TDD quando muda comportamento executável. |
-| [Superpowers systematic-debugging](https://github.com/obra/superpowers/blob/bb92a77741419a4ab5f06e711a283343f1ada0c3/skills/systematic-debugging/SKILL.md) | Reprodução, hipótese e causa antes da correção. | Base do encaminhamento de defeitos ao implementador. |
-| [Anthropic webapp-testing](https://github.com/anthropics/skills/blob/dbd4588f9e1033efb41dad4bef2f7947c8993d44/skills/webapp-testing/SKILL.md) | Browser/Playwright e evidência da interface local. A stack atual não precisa disso para toda mudança. | Referência condicional se mudar jornada web; não instalar browser/Playwright agora. |
-| [python-testing-patterns](https://github.com/wshobson/agents/blob/46891e7e60da0e52baf1050b7b6391b64e84c6d9/plugins/python-development/skills/python-testing-patterns/SKILL.md) | Descrição e exemplos iniciais centrados em pytest, fixtures e mocks; repo MIT. | Adiada: unittest já atende; não migrar stack para adotar uma skill. |
+| [Anthropic testing-strategy](https://github.com/anthropics/knowledge-work-plugins/blob/02ffa99ff00ce4d3046ccebabb8357cb39f3ab06/engineering/skills/testing-strategy/SKILL.md) | Strategy by component and risk. Balances coverage, speed, and maintenance. Requires no framework. Apache-2.0 repository. | Basis for the smallest sufficient matrix. |
+| [Superpowers verification-before-completion](https://github.com/obra/superpowers/blob/bb92a77741419a4ab5f06e711a283343f1ada0c3/skills/verification-before-completion/SKILL.md) | Requires current evidence before a success claim. Already available locally, MIT. | Basis for the QA report and decision. |
+| [Superpowers test-driven-development](https://github.com/obra/superpowers/blob/bb92a77741419a4ab5f06e711a283343f1ada0c3/skills/test-driven-development/SKILL.md), writing-good-tests resource | Test behavior and find real regressions. Rejects tests that only mirror code or prose. | Basis for the quality of new tests. TDD when executable behavior changes. |
+| [Superpowers systematic-debugging](https://github.com/obra/superpowers/blob/bb92a77741419a4ab5f06e711a283343f1ada0c3/skills/systematic-debugging/SKILL.md) | Reproduction, hypothesis, and cause before the fix. | Basis for sending defects to the implementer. |
+| [Anthropic webapp-testing](https://github.com/anthropics/skills/blob/dbd4588f9e1033efb41dad4bef2f7947c8993d44/skills/webapp-testing/SKILL.md) | Browser, Playwright, and evidence of the local interface. The current stack does not need this for every change. | Conditional reference for a changed web journey. Do not install a browser or Playwright now. |
+| [python-testing-patterns](https://github.com/wshobson/agents/blob/46891e7e60da0e52baf1050b7b6391b64e84c6d9/plugins/python-development/skills/python-testing-patterns/SKILL.md) | Description and first examples center on pytest, fixtures, and mocks. MIT repository. | Deferred: unittest is sufficient. Do not migrate the stack to adopt a skill. |
 
-As revisões externas são as consultadas, não dependências instaladas. Superpowers permanece inalterado. As instruções próprias serão originais, com atribuição por links; não copiar helpers ou presumir uma licença única para o repo misto anthropics/skills. Não é necessário baixar mais bibliotecas para inspiração.
+The external revisions are the ones that were read. They are not installed dependencies. Superpowers stays unchanged. The project instructions will be original, with attribution through links. Do not copy helpers, and do not assume one license for the mixed anthropics/skills repository. No more libraries need to be downloaded as models.
 
-## Compatibilidade dos agentes
+## Agent compatibility
 
-- [Codex: subagents](https://learn.chatgpt.com/docs/agent-configuration/subagents): TOML de projeto em `.codex/agents/`, com name, description e developer_instructions. O repo já usa esse formato. Herdar modelo/permissões da sessão.
-- [Claude Code: sub-agents](https://code.claude.com/docs/en/sub-agents): Markdown em `.claude/agents/`, frontmatter com nome, descrição e ferramentas. QA precisa de Bash para executar testes e escrita para seus artefatos; as instruções delimitam o escopo, sem alegar sandbox somente leitura.
-- Contrato comum em `docs/workflow/qa-test.md`; uma skill autocontida com referências relativas pode ser copiada pelo instalador existente.
+- [Codex: subagents](https://learn.chatgpt.com/docs/agent-configuration/subagents): project TOML in `.codex/agents/`, with name, description, and developer_instructions. The repository already uses this format. Inherit the model and permissions from the session.
+- [Claude Code: sub-agents](https://code.claude.com/docs/en/sub-agents): Markdown in `.claude/agents/`, with frontmatter for the name, description, and tools. QA needs Bash to run tests and write access for its artifacts. The instructions limit the scope, with no claim of a read-only sandbox.
+- Common contract in `docs/workflow/qa-test.md`. The existing installer can copy one self-contained skill with relative references.
 
-## Decisão
+## Decision
 
-Pesquisa continua primeiro, seguida de plano técnico com contribuição de QA à matriz, execução Superpowers, verificação de QA e integração/release. QA compara critérios com comportamento e evidências; a revisão de código existente continua responsável por qualidade estrutural. QA não faz merges, releases ou correções silenciosas de produto.
+Research stays first. Then come the technical plan with a QA contribution to the matrix, the Superpowers execution, the QA check, and the integration or release. QA compares the criteria with behavior and evidence. The existing code review stays responsible for structural quality. QA does not merge, release, or silently fix the product.
 
-Dois modos bastam: planejar testes e verificar entrega. Uma matriz pequena pode ficar no plano; mudanças maiores usam `qa-plan.md`. Registrar SHA, comandos, exit codes, esperado/obtido e limitações em `qa-report.md`. Teste obrigatório indisponível bloqueia o critério; teste fora do escopo não deve criar trabalho artificial. Smoke de container, inferência real e browser são condicionais ao que mudou. CI existente valida execução, não interpreta aprovação textual de QA.
+Two modes are enough: plan the tests and check the delivery. A small matrix can stay in the plan. Larger changes use `qa-plan.md`. Record the SHA, commands, exit codes, expected and actual results, and limits in `qa-report.md`. A required test that is not available blocks the criterion. An out-of-scope test must not create artificial work. Container smoke tests, real inference, and browser tests depend on what changed. The existing CI checks execution. It does not read the text QA approval.
 
-Não há decisão do usuário pendente. Confirmar portabilidade por instalação em diretório temporário, links dos dois provedores e avaliação independente da skill com tarefa realista isolada.
+No user decision is open. Confirm portability with an installation in a temporary directory and the links for both providers. Evaluate the skill independently with a realistic isolated task.

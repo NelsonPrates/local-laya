@@ -1,28 +1,28 @@
-# Pesquisa: bootstrap local-layla e workflow SDD
+# Research: local-layla bootstrap and SDD workflow
 
-Data: 2026-10-11. Pedido: publicar um repositório pessoal público com skills para Docker/API Layla e acrescentar SDD com pesquisa, planejador técnico, Superpowers, agentes paralelos e Gitflow.
+Date: 2026-10-11. Request: publish a public personal repository with skills for the Layla Docker setup and API. Add SDD with research, a technical planner, Superpowers, parallel agents, and Gitflow.
 
-## Evidências verificadas
+## Checked evidence
 
-| Fonte primária | Revisão/data | Achado e efeito |
+| Primary source | Revision or date | Finding and effect |
 | --- | --- | --- |
-| [PapaKoftes/Layla](https://github.com/PapaKoftes/Layla) | `336ee4a362945b2badf8f48fcd5820cb132a7759` | API FastAPI, `/agent`, `/health`, `/pending`; campos de permissões explícitos; modelos GGUF |
-| [Config runtime](https://github.com/PapaKoftes/Layla/blob/336ee4a362945b2badf8f48fcd5820cb132a7759/agent/runtime_safety.py) | mesmo SHA | `LAYLA_DATA_DIR`, `models_dir` e `sandbox_root` precisam apontar aos volumes persistentes |
-| [Aprovações](https://github.com/PapaKoftes/Layla/blob/336ee4a362945b2badf8f48fcd5820cb132a7759/agent/routers/approvals.py) | mesmo SHA | Aprovação exige conexão local direta; bridge Docker não equivale a loopback do app |
-| [Superpowers](https://github.com/obra/superpowers) | `bb92a77741419a4ab5f06e711a283343f1ada0c3` | 15 skills, licença MIT; execução nativa ou por subagentes, revisão e verificação |
-| [Codex skills](https://developers.openai.com/codex/skills/) | consulta 2026-10-11 | Descoberta em `.agents/skills`; conteúdo portável por pastas |
-| [Codex subagents](https://developers.openai.com/codex/subagents/) | consulta 2026-10-11 | Papéis customizados em `.codex/agents/*.toml`; disponibilidade depende da versão/harness |
-| [Claude subagents](https://code.claude.com/docs/en/sub-agents) | consulta 2026-10-11 | Papéis em `.claude/agents/`, instruções Markdown e filtros de tools |
-| [Gitflow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow) | consulta 2026-10-11 | Releases de develop, hotfix de main, tags em main e retorno das correções |
+| [PapaKoftes/Layla](https://github.com/PapaKoftes/Layla) | `336ee4a362945b2badf8f48fcd5820cb132a7759` | FastAPI API with `/agent`, `/health`, `/pending`. Explicit permission fields. GGUF models |
+| [Runtime config](https://github.com/PapaKoftes/Layla/blob/336ee4a362945b2badf8f48fcd5820cb132a7759/agent/runtime_safety.py) | same SHA | `LAYLA_DATA_DIR`, `models_dir`, and `sandbox_root` must point to the persistent volumes |
+| [Approvals](https://github.com/PapaKoftes/Layla/blob/336ee4a362945b2badf8f48fcd5820cb132a7759/agent/routers/approvals.py) | same SHA | Approval requires a direct local connection. The Docker bridge is not the same as the app loopback |
+| [Superpowers](https://github.com/obra/superpowers) | `bb92a77741419a4ab5f06e711a283343f1ada0c3` | 15 skills, MIT license. Native or subagent execution, review, and checks |
+| [Codex skills](https://developers.openai.com/codex/skills/) | read 2026-10-11 | Discovery in `.agents/skills`. Content is portable as folders |
+| [Codex subagents](https://developers.openai.com/codex/subagents/) | read 2026-10-11 | Custom roles in `.codex/agents/*.toml`. Availability depends on the version and harness |
+| [Claude subagents](https://code.claude.com/docs/en/sub-agents) | read 2026-10-11 | Roles in `.claude/agents/`, Markdown instructions, and tool filters |
+| [Gitflow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow) | read 2026-10-11 | Releases from develop, hotfixes from main, tags on main, and fixes merged back |
 
-## Decisões
+## Decisions
 
-Python stdlib para gerador, cliente e verificadores; Bash/Compose para operação. CPU por padrão evita presumir GPU disponível. Skill própria de pesquisa cobre o domínio; reutilizar a biblioteca oficial Superpowers para execução evita reescrever sua metodologia. Copiar skills com origem/lock em vez de submodule permite clonar o repo sem preparação extra.
+Python stdlib for the generator, the client, and the checkers. Bash and Compose for operation. CPU by default, so we do not assume an available GPU. A project research skill covers the domain. Reusing the official Superpowers library for execution avoids rewriting its method. Copying the skills with a source lock, instead of a submodule, lets users clone the repository without extra setup.
 
-Paralelismo usa worktrees e reserva exclusiva por tarefa no diretório Git comum; esta é uma coordenação local, não distribuída. As sessões dos provedores são abertas separadamente, sem dependência de um broker específico no projeto.
+Parallel work uses worktrees and an exclusive claim for each task in the common Git directory. This is local coordination, not distributed coordination. Provider sessions open separately. The project does not depend on a specific broker.
 
-## Limites e experimentos
+## Limits and experiments
 
-Modelo GGUF não foi fornecido. Validar geração, cliente com HTTP local simulado e inicialização real sem modelo; não declarar inferência testada. Build CPU foi iniciado para confirmar dependências e boot. Registrar resultados finais em `review.md` após os checks.
+No GGUF model was supplied. Check generation, the client against simulated local HTTP, and a real startup without a model. Do not claim that inference was tested. A CPU build was started to confirm the dependencies and the boot. Record the final results in `review.md` after the checks.
 
-O usuário confirmou PapaKoftes/Layla e repositório público. Não há escolha material pendente para criar o bootstrap. O fluxo futuro preserva autorização por escopo, sem transformar cada etapa em nova confirmação.
+The user confirmed PapaKoftes/Layla and a public repository. No material choice is open for the bootstrap. The future workflow keeps authorization by scope and does not turn each step into a new confirmation.

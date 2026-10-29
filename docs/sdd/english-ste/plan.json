@@ -1,0 +1,39 @@
+{
+  "change": "english-ste",
+  "research": "research.md",
+  "spec": "spec.md",
+  "plan": "plan.md",
+  "execution_skill": "executing-plans",
+  "tasks": [
+    {
+      "id": "T01",
+      "title": "Vendor and link the asd-ste100 skill and add the style check",
+      "owner": "coordinator",
+      "estimate_minutes": 15,
+      "depends_on": [],
+      "files": ["vendor/asd-ste100", ".agents/skills/asd-ste100", ".claude/skills/asd-ste100", "scripts/check-vendor.py", "scripts/check-style.py"],
+      "acceptance": "E2: both vendored libraries are intact and discoverable.",
+      "verify": "python3 scripts/check-vendor.py; expected: asd-ste100 and superpowers are intact, exit 0."
+    },
+    {
+      "id": "T02",
+      "title": "Translate the Strict prompt files, script messages, and tests",
+      "owner": "coordinator",
+      "estimate_minutes": 60,
+      "depends_on": ["T01"],
+      "files": ["AGENTS.md", "CLAUDE.md", "skills", ".claude/agents", ".codex/agents", "docs/workflow/tech-planner.md", "docs/workflow/qa-test.md", "docs/workflow/templates", "scripts/check-plan.py", "scripts/check-release.py", "scripts/check-skills.py", "scripts/install-skills.py", "scripts/worktree.py", "tests/test_layla.py"],
+      "acceptance": "E3 and E5: zero hard STE violations and no behavior change except the default language.",
+      "verify": "python3 scripts/check-style.py; python3 -m unittest discover -s tests; expected: exit 0."
+    },
+    {
+      "id": "T03",
+      "title": "Translate the human documentation and SDD records and add CI checks",
+      "owner": "coordinator",
+      "estimate_minutes": 45,
+      "depends_on": ["T02"],
+      "files": ["README.md", "CHANGELOG.md", "THIRD_PARTY.md", "docs/workflow/SDD.md", "docs/workflow/RELEASE.md", "docs/workflow/SUPERPOWERS.md", "docs/sdd", ".github/workflows", "tests/test_workflow.py"],
+      "acceptance": "E1 and E4: no Portuguese text outside vendor/, and every fact is kept.",
+      "verify": "python3 -m unittest discover -s tests -v; all project checks; expected: exit 0."
+    }
+  ]
+}

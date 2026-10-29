@@ -1,3 +1,3 @@
 @AGENTS.md
 
-Use as skills locais de `.claude/skills/` e os agentes `.claude/agents/tech-planner.md` e `.claude/agents/qa-test.md` quando aplicável. O contrato, os artefatos SDD e as reservas são os mesmos usados pelo Codex.
+Use the local skills in `.claude/skills/` and the agents `.claude/agents/tech-planner.md` and `.claude/agents/qa-test.md` when they apply. Codex uses the same contract, SDD artifacts, and claims.

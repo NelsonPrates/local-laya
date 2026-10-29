@@ -147,10 +147,25 @@ class ReleaseTests(unittest.TestCase):
 
     def test_skill_discovery_links_and_vendor_integrity(self):
         for provider in (".agents", ".claude"):
-            for name in ("project-research", "project-qa", "layla-docker", "layla-local", "executing-plans", "subagent-driven-development"):
+            for name in ("project-research", "project-qa", "layla-docker", "layla-local", "executing-plans", "subagent-driven-development", "asd-ste100"):
                 self.assertTrue((ROOT / provider / "skills" / name / "SKILL.md").is_file())
         result = subprocess.run([sys.executable, str(ROOT / "scripts/check-vendor.py")], capture_output=True, text=True)
         self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_prompt_files_pass_ste_lint(self):
+        result = subprocess.run([sys.executable, str(ROOT / "scripts/check-style.py")], capture_output=True, text=True)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
+    def test_changed_vendor_file_fails_integrity_check(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            copy = Path(tmp) / "repo"
+            (copy / "scripts").mkdir(parents=True)
+            (copy / "scripts/check-vendor.py").write_bytes((ROOT / "scripts/check-vendor.py").read_bytes())
+            subprocess.run(["cp", "-r", str(ROOT / "vendor"), str(copy / "vendor")], check=True)
+            (copy / "vendor/asd-ste100/SKILL.md").write_text("changed")
+            result = subprocess.run([sys.executable, str(copy / "scripts/check-vendor.py")], capture_output=True, text=True)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("asd-ste100", result.stderr)
 
 
 class AtomicClaimTests(unittest.TestCase):
