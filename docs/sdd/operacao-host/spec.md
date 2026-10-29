@@ -75,3 +75,4 @@ Copiadas de `research.md`.
    a. integrar `feature/operacao-host` em `develop` antes de T01 (o plano supõe isto); e
    b. autorizar a criação de `release/0.2.0` por um job agendado, ou executar T01 pessoalmente.
    Bloqueia T01, e por isso T02, T03 e T04.
+   **Resposta do dono (2026-10-28):** o coordenador (operador do host) faz o merge em `develop` e T01 nesta sessão, só localmente. Sem push, sem merge em `main`, sem tag. T02 espera a pergunta 3.

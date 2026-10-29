@@ -42,7 +42,7 @@ Interface de T03: `./layla backup DEST [--keep N]`. Saída padrão: o caminho do
 
 ## Tarefas
 
-- [ ] **T01 — Preparar `release/0.2.0`** (dono: coordenador; 20 min; depende de: —)
+- [x] **T01 — Preparar `release/0.2.0`** (dono: coordenador; 20 min; depende de: —)
   - Criar `release/0.2.0` de `origin/develop`. Atualizar `VERSION` e `CHANGELOG.md`. Rodar os checks. Registrar QA em `qa-report.md`. Abrir o PR para `main` só com autorização.
   - Resultado: A1, A2.
   - Verificação: `python3 scripts/check-release.py v0.2.0` → `Tag, versão e notas coerentes`; `python3 scripts/check-skills.py` → código 0; `python3 -m unittest discover -s tests -v` → `OK`; `bash -n skills/layla-docker/assets/container/layla` → código 0.
